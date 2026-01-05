@@ -1,0 +1,119 @@
+# --- K-2:4 NQ Configuration for SMACv2 ---
+# This config implements the K-2:4 algorithm for StarCraft II multi-agent scenarios
+# Uses unit type-based heterogeneity (n_unit_types instead of n_agents)
+
+# --- Epsilon greedy action selector ---
+action_selector: "epsilon_greedy"
+epsilon_start: 1.0
+epsilon_finish: 0.05
+epsilon_anneal_time: 100000
+evaluation_epsilon: 0.0
+
+runner: "parallel"
+batch_size_run: 4 # batch_size_run=4, buffer_size = 2500, batch_size=64  for 3s5z_vs_3s6z
+buffer_size: 5000 
+batch_size: 128
+optimizer: 'adam'
+
+t_max: 10050000
+
+# Update the target network every {} episodes
+target_update_interval_or_tau: 200
+target_update_interval: 200
+
+# Observation settings
+obs_agent_id: True
+obs_last_action: False
+
+# --- Q-Learner settings ---
+standardise_returns: False
+standardise_rewards: True
+
+agent_output_type: "q"
+
+# --- K-2:4 specific components for SMACv2 ---
+n_unit_types: 3
+agent: "k24_type_rnn_1R3"       # Use K-2:4 RNN agent for unit types
+mac: "Kalei_type_n_mac"         # Use Kaleidoscope type-based MAC
+learner: "k24_nq_learner"       # Use K-2:4 NQ-learner
+double_q: True
+mixer: "qmix"
+use_rnn: True                   # Enable RNN for temporal dependencies
+mixing_embed_dim: 32
+hypernet_layers: 2
+lr: 0.001 # Learning rate for agents
+td_lambda: 0.6 # 0.3 for 6h_vs_8z
+hypernet_embed: 64
+q_lambda: False
+
+name: "K24_nq"
+
+# --- K-2:4 Algorithm Parameters for SMACv2 ---
+K24_args:
+  # ========== Temperature Annealing ==========
+  # SMACv2 benefits from slower annealing due to complex strategies
+
+  temperature_init: 5.0          # Initial temperature
+  temperature_min: 0.1           # Minimum temperature
+  anneal_start: 0.0              # Start annealing at training start
+  anneal_end: 0.8                # Complete annealing at 80% progress
+  anneal_end_step: 800000        # End step (0.8 * t_max for 1M timesteps)
+
+  # ========== EMA Activation Tracking ==========
+  # SMACv2 has high state space variation - use standard momentum
+
+  ema_momentum: 0.99             # EMA coefficient for activation tracking
+
+  # ========== Heterogeneity Coefficients ==========
+  # Per-unit-type coefficients for specialized strategies
+
+  hetero_init_scale: 0.01        # Initial scale for unit type heterogeneity
+
+  # ========== Pattern Orthogonality Loss ==========
+  # Encourage different unit types to use different network structures
+
+  div_coef: 0.1                  # Base diversity coefficient
+  deque_len: 100                 # Loss history buffer for adaptive coefficient
+
+  # ========== Adaptive Resetting ==========
+  # Reset to handle strategy evolution during training
+
+  reset_interval: 10000          # Reset interval (timesteps)
+  reset_ratio: 0.1               # Reset 10% of coefficients
+
+  # ========== Adaptive Reset (Optional) ==========
+  # KL-based reset for SMACv2's dynamic environments
+
+  use_adaptive_reset: False      # Set True for more responsive adaptation
+  kl_threshold: 0.1              # KL divergence threshold
+
+# ========== SMACv2-Specific Tuning Notes ==========
+#
+# SMACv2 Characteristics:
+#   - Unit types have specialized roles (e.g., Marine, Medivac)
+#   - Different maps require different levels of heterogeneity
+#   - Strategy evolution is more pronounced than simple environments
+#
+# Recommended Adjustments per Map Type:
+#
+# 1. Small Maps (3m, 2s3z):
+#    - Lower div_coef (0.05-0.1): Less heterogeneity needed
+#    - Faster annealing (0.7 end): Quick convergence
+#    - Larger reset_interval (15000-20000): Stable training
+#
+# 2. Medium Maps (6h, 3s5z):
+#    - Medium div_coef (0.1-0.2): Balanced heterogeneity
+#    - Standard annealing (0.8 end): Default behavior
+#    - Standard reset_interval (10000): Default behavior
+#
+# 3. Large Maps (corridor, 27m_vs_30m):
+#    - Higher div_coef (0.2-0.3): More specialization beneficial
+#    - Slower annealing (0.85-0.9 end): More exploration time
+#    - Smaller reset_interval (5000-7000): More adaptation
+#    - Consider use_adaptive_reset: True for dynamic adaptation
+#
+# Unit Type Considerations:
+#   - Fewer unit types (2-3): May need lower div_coef
+#   - Many unit types (4+): Can benefit from higher div_coef
+#   - Asymmetric units (e.g., 1 Medivac + 5 Marines):
+#       May need adaptive reset for optimal performance

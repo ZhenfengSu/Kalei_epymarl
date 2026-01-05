@@ -1,0 +1,55 @@
+# --- K-2:4 NQ Configuration for Small SMACv2 Maps ---
+# Optimized for small maps like 3m, 2s3z, 1c3s2z
+# Focus on fast convergence with minimal heterogeneity
+
+action_selector: "epsilon_greedy"
+epsilon_start: 1.0
+epsilon_finish: 0.05
+epsilon_anneal_time: 50000
+evaluation_epsilon: 0.0
+
+runner: "episode"
+buffer_size: 5000
+target_update_interval_or_tau: 200
+
+obs_agent_id: True
+obs_last_action: False
+
+standardise_returns: False
+standardise_rewards: True
+
+agent_output_type: "q"
+agent: "k24_type_rnn_1R3"
+mac: "Kalei_type_n_mac"
+learner: "k24_nq_learner"
+double_q: True
+mixer: "qmix"
+use_rnn: True
+mixing_embed_dim: 32
+hypernet_layers: 2
+hypernet_embed: 64
+
+name: "K24_nq_small_map"
+
+# --- Small Map Optimization ---
+K24_args:
+  # Faster annealing for quick convergence
+  temperature_init: 4.0
+  temperature_min: 0.1
+  anneal_start: 0.0
+  anneal_end: 0.7                # Earlier annealing end
+  anneal_end_step: 700000
+
+  ema_momentum: 0.99
+  hetero_init_scale: 0.005       # Smaller initial scale
+
+  # Lower diversity for simpler tasks
+  div_coef: 0.05                 # Minimal diversity
+  deque_len: 100
+
+  # Less frequent resets for stability
+  reset_interval: 20000
+  reset_ratio: 0.05
+
+  use_adaptive_reset: False
+  kl_threshold: 0.15
