@@ -14,17 +14,17 @@
     "repositories": [
       {
         "commit": "18064d2e307961e5c3a52823937c4fa81e3e9c2b",
-        "dirty": false,
+        "dirty": true,
         "url": "https://github.com/ZhenfengSu/Kalei_epymarl.git"
       },
       {
         "commit": "18064d2e307961e5c3a52823937c4fa81e3e9c2b",
-        "dirty": false,
+        "dirty": true,
         "url": "https://github.com/ZhenfengSu/Kalei_epymarl.git"
       },
       {
         "commit": "18064d2e307961e5c3a52823937c4fa81e3e9c2b",
-        "dirty": false,
+        "dirty": true,
         "url": "https://github.com/ZhenfengSu/Kalei_epymarl.git"
       }
     ],
@@ -43,16 +43,7 @@
       ]
     ]
   },
-  "fail_trace": [
-    "Traceback (most recent call last):\n",
-    "  File \"/root/anaconda3/envs/mpe/lib/python3.11/site-packages/sacred/config/captured_function.py\", line 42, in captured_function\n    result = wrapped(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^\n",
-    "  File \"/mnt/lc_gpu_test/Semi_Kaleidoscope/Kalei_epymarl/Semi_Kalei/epymarl_kaleidoscope/src/main.py\", line 44, in my_main\n    run(_run, config, _log)\n",
-    "  File \"/mnt/lc_gpu_test/Semi_Kaleidoscope/Kalei_epymarl/Semi_Kalei/epymarl_kaleidoscope/src/run.py\", line 67, in run\n    run_sequential(args=args, logger=logger)\n",
-    "  File \"/mnt/lc_gpu_test/Semi_Kaleidoscope/Kalei_epymarl/Semi_Kalei/epymarl_kaleidoscope/src/run.py\", line 100, in run_sequential\n    runner = r_REGISTRY[args.runner](args=args, logger=logger)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
-    "  File \"/mnt/lc_gpu_test/Semi_Kaleidoscope/Kalei_epymarl/Semi_Kalei/epymarl_kaleidoscope/src/runners/episode_runner.py\", line 15, in __init__\n    assert self.batch_size == 1\n",
-    "AssertionError\n"
-  ],
-  "heartbeat": "2026-01-11T15:28:46.637117",
+  "heartbeat": "2026-01-11T15:59:28.887668",
   "host": {
     "ENV": {},
     "cpu": "AMD EPYC 9554 64-Core Processor",
@@ -79,7 +70,8 @@
       "env_args": {
         "key": "pz-mpe-simple-world-comm-v3",
         "time_limit": 25
-      }
+      },
+      "seed": 0
     },
     "named_configs": [],
     "options": {
@@ -106,7 +98,8 @@
       "COMMAND": null,
       "UPDATE": [
         "env_args.time_limit=25",
-        "env_args.key=pz-mpe-simple-world-comm-v3"
+        "env_args.key=pz-mpe-simple-world-comm-v3",
+        "seed=0"
       ],
       "help": false,
       "with": true
@@ -114,7 +107,6 @@
   },
   "resources": [],
   "result": null,
-  "start_time": "2026-01-11T15:28:46.631243",
-  "status": "FAILED",
-  "stop_time": "2026-01-11T15:28:46.639827"
+  "start_time": "2026-01-11T15:59:08.877386",
+  "status": "RUNNING"
 }

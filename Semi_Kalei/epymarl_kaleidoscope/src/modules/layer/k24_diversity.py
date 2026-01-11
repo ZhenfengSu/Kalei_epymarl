@@ -15,7 +15,7 @@ Key Innovation:
 
 import torch as th
 import torch.nn as nn
-
+import numpy
 
 class PatternOrthogonalityLoss(nn.Module):
     """
@@ -223,7 +223,7 @@ class LayerPatternTracker:
         for layer in self.layers:
             dist = layer.get_pattern_distribution()
             if dist is not None:
-                all_pattern_dists.append(dist.cpu().numpy())
+                all_pattern_dists.append(numpy.array(dist.detach().float().cpu().tolist()))
 
         if not all_pattern_dists:
             return {}

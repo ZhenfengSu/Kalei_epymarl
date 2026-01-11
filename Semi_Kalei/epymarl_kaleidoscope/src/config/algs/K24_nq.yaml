@@ -10,12 +10,9 @@ epsilon_anneal_time: 50000
 evaluation_epsilon: 0.0
 
 runner: "episode"
-batch_size_run: 4
 buffer_size: 5000
 batch_size: 64
 optimizer: 'adam'
-
-t_max: 500000
 
 # Update the target network every {} episodes
 target_update_interval_or_tau: 200
@@ -33,7 +30,7 @@ agent_output_type: "q"
 
 # --- K-2:4 specific components for MPE ---
 agent: "k24_rnn_1R3"              # Use K-2:4 RNN agent for MPE
-mac: "basic"                      # Use basic controller
+mac: "kalei_mac"                      # Use basic controller
 learner: "k24_q_learner"          # Use K-2:4 Q-learner
 double_q: True
 mixer: "qmix"                     # Can use "qmix", "vdn", or None
