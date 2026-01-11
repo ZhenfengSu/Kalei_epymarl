@@ -1,0 +1,121 @@
+# --- K-2:4 NQ Configuration for MPE ---
+# This config implements the K-2:4 algorithm for Multi-Agent Particle Environments
+# Uses agent-based heterogeneity (n_agents) for diverse strategies
+
+# --- Epsilon greedy action selector ---
+action_selector: "epsilon_greedy"
+epsilon_start: 1.0
+epsilon_finish: 0.05
+epsilon_anneal_time: 50000
+evaluation_epsilon: 0.0
+
+runner: "episode"
+batch_size_run: 4
+buffer_size: 5000
+batch_size: 64
+optimizer: 'adam'
+
+t_max: 500000
+
+# Update the target network every {} episodes
+target_update_interval_or_tau: 200
+target_update_interval: 200
+
+# Observation settings
+obs_agent_id: True
+obs_last_action: False
+
+# --- Q-Learner settings ---
+standardise_returns: False
+standardise_rewards: True
+
+agent_output_type: "q"
+
+# --- K-2:4 specific components for MPE ---
+agent: "k24_rnn_1R3"              # Use K-2:4 RNN agent for MPE
+mac: "basic"                      # Use basic controller
+learner: "k24_q_learner"          # Use K-2:4 Q-learner
+double_q: True
+mixer: "qmix"                     # Can use "qmix", "vdn", or None
+use_rnn: True                     # Enable RNN for temporal dependencies
+mixing_embed_dim: 32
+hypernet_layers: 2
+lr: 0.0005                        # Learning rate for agents
+gamma: 0.99
+td_lambda: 0.6
+hypernet_embed: 64
+q_lambda: False
+
+name: "K24_nq"
+
+# --- K-2:4 Algorithm Parameters for MPE ---
+K24_args:
+  # ========== Temperature Annealing ==========
+  # MPE environments are generally simpler than SMACv2
+  # Can use faster annealing schedules
+
+  temperature_init: 5.0           # Initial temperature
+  temperature_min: 0.1            # Minimum temperature
+  anneal_start: 0.0               # Start annealing at training start
+  anneal_end: 0.8                 # Complete annealing at 80% progress
+  anneal_end_step: 400000         # End step (0.8 * t_max for 500K timesteps)
+
+  # ========== EMA Activation Tracking ==========
+  # MPE has relatively stable state distributions
+
+  ema_momentum: 0.99              # EMA coefficient for activation tracking
+
+  # ========== Heterogeneity Coefficients ==========
+  # Per-agent coefficients for specialized strategies
+
+  hetero_init_scale: 0.01         # Initial scale for agent heterogeneity
+
+  # ========== Pattern Orthogonality Loss ==========
+  # Encourage different agents to use different network structures
+
+  div_coef: 0.1                   # Base diversity coefficient
+  deque_len: 100                  # Loss history buffer for adaptive coefficient
+
+  # ========== Adaptive Resetting ==========
+  # Reset to handle strategy evolution during training
+
+  reset_interval: 10000           # Reset interval (timesteps)
+  reset_ratio: 0.1                # Reset 10% of coefficients
+
+  # ========== Adaptive Reset (Optional) ==========
+  # KL-based reset for more responsive adaptation
+  # Not typically needed for simpler MPE environments
+
+  use_adaptive_reset: False       # Set True for more responsive adaptation
+  kl_threshold: 0.1               # KL divergence threshold
+
+# ========== MPE-Specific Tuning Notes ==========
+#
+# MPE Environment Characteristics:
+#   - Particle-based physics simulations
+#   - Continuous state and action spaces
+#   - Generally simpler than SMACv2 scenarios
+#   - Lower dimensional observations
+#   - More stable episode-to-episode dynamics
+#
+# Recommended Adjustments per Task Type:
+#
+# 1. Cooperative Tasks (simple_spread, simple_reference):
+#    - Standard div_coef (0.1-0.15): Moderate heterogeneity
+#    - Standard annealing (0.8 end): Default behavior
+#    - Larger reset_interval (15000-20000): Stable training
+#
+# 2. Competitive Tasks (simple_tag, simple_adversary):
+#    - Higher div_coef (0.15-0.2): More heterogeneity for adversarial strategies
+#    - Slower annealing (0.85-0.9 end): More exploration time
+#    - Standard reset_interval (10000): Default behavior
+#
+# 3. Communication Tasks (simple_speaker_listener):
+#    - Lower div_coef (0.05-0.1): Less heterogeneity for coordinated communication
+#    - Faster annealing (0.7-0.75 end): Quick convergence
+#    - Larger reset_interval (15000): Stable training
+#
+# Agent Count Considerations:
+#   - Few agents (2-3): May need lower div_coef (0.05-0.1)
+#   - Medium agents (4-6): Standard div_coef (0.1-0.15)
+#   - Many agents (7+): Can benefit from higher div_coef (0.15-0.2)
