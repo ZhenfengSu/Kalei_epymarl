@@ -98,3 +98,14 @@
   logger.warn(
 [INFO 15:59:09] my_main t_env: 25 / 3050000
 [INFO 15:59:09] my_main Estimated time left: 24 seconds. Time passed: 0 seconds
+[INFO 16:06:58] my_main Recent Stats | t_env:      50000 | Episode:     2000
+div_coef:                  9.1263	div_loss:                  0.0111	ep_length_mean:           25.0000	epsilon:                   0.2400
+grad_norm:                 6.1822	loss:                      1.4576	loss_td:                   1.3562	overall_sparsity:          0.1617
+pattern_0_prob:            0.1667	pattern_1_prob:            0.1667	pattern_2_prob:            0.1667	pattern_3_prob:            0.1667
+pattern_4_prob:            0.1667	pattern_5_prob:            0.1667	pattern_entropy:           0.0000	pattern_max_similarity:    0.1667
+pattern_mean_similarity:   0.1667	progress:                  0.0540	q_taken_mean:              0.0580	return_mean:             -39.9531
+return_std:               49.9596	sparsity_layer_0:          0.5000	sparsity_layer_1:          0.5000	sparsity_layer_2:          0.5000
+sparsity_layer_3:          0.5000	target_mean:               0.0753	td_error_abs:              0.7932	temperature:               4.6693
+test_ep_length_mean:      25.0000	test_return_mean:        -342.5304	test_return_std:         154.3127	
+[INFO 16:06:58] my_main t_env: 50025 / 3050000
+[INFO 16:06:58] my_main Estimated time left: 7 hours, 49 minutes, 15 seconds. Time passed: 7 minutes, 49 seconds

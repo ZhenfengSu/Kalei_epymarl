@@ -163,3 +163,4 @@ cython_debug/
 baseline/epymarl_kaleidoscope/results/**
 
 Semi_Kalei/epymarl_kaleidoscope/results/**
+Semi_Kalei/epymarl_kaleidoscope/results/sacred/**
