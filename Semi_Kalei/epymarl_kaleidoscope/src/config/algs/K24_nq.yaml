@@ -52,15 +52,15 @@ K24_args:
   # Can use faster annealing schedules
 
   temperature_init: 5.0           # Initial temperature
-  temperature_min: 0.1            # Minimum temperature
-  anneal_start: 0.0               # Start annealing at training start
+  temperature_min: 0.2            # Minimum temperature
+  anneal_start: 0.4               # Start annealing at training start
   anneal_end: 0.8                 # Complete annealing at 80% progress
-  anneal_end_step: 400000         # End step (0.8 * t_max for 500K timesteps)
+  anneal_end_step: 2400000         # End step (0.8 * t_max for 500K timesteps)
 
   # ========== EMA Activation Tracking ==========
   # MPE has relatively stable state distributions
 
-  ema_momentum: 0.99              # EMA coefficient for activation tracking
+  ema_momentum: 0.9              # EMA coefficient for activation tracking
 
   # ========== Heterogeneity Coefficients ==========
   # Per-agent coefficients for specialized strategies
@@ -85,6 +85,12 @@ K24_args:
 
   use_adaptive_reset: False       # Set True for more responsive adaptation
   kl_threshold: 0.1               # KL divergence threshold
+
+  # ========== Pruning Schedule ==========
+  # Delayed pruning: Train without pruning first, then start pruning
+  prune_start_ratio: 0.4          # Start pruning at this point (0.4 = 40% of training)
+  use_sparse_gpt_first: True      # Use SparseGPT compensation for first pruning step
+  sparse_gpt_steps: 100           # Number of steps to apply SparseGPT compensation
 
 # ========== MPE-Specific Tuning Notes ==========
 #

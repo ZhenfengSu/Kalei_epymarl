@@ -145,11 +145,15 @@ class K24_RNNAgent_1R3(nn.Module):
         return self.pattern_tracker.collect_patterns()
 
     def _get_linear_weight_sparsities(self):
-        """Calculate sparsity for each layer."""
+        """Calculate sparsity for each layer (respects pruning control)."""
         sparsities = []
         w_counts = []
         for layer in self.mask_layers:
-            sparsity = layer.get_sparsity()
+            # Use get_sparsity_with_pruning_control if available
+            if hasattr(layer, 'get_sparsity_with_pruning_control'):
+                sparsity = layer.get_sparsity_with_pruning_control()
+            else:
+                sparsity = layer.get_sparsity()
             sparsities.append(sparsity)
             # Estimate weight count
             w_counts.append(layer.weight.numel())

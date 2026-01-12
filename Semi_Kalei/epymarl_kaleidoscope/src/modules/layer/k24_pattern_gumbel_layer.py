@@ -177,6 +177,10 @@ class SemiStructuredLinear24(nn.Linear):
         # For adaptive reset mechanism
         self.hetero_init_scale = hetero_init_scale
 
+        # Pruning control
+        self.pruning_enabled = False  # Start with pruning disabled
+        self.sparsegpt_applied = False  # Track if SparseGPT has been applied
+
     def _compute_heterogeneous_scores(self, agent_ids):
         """
         Module A: Dynamic Heterogeneous Scoring
@@ -255,7 +259,14 @@ class SemiStructuredLinear24(nn.Linear):
         pattern_logits = self.pattern_matrix.project_to_patterns(
             scores_grouped.reshape(-1, 4)
         ).reshape(N, self.out_features, n_groups, 6)
-
+        
+        # ==========================================
+        # === 核心修改：在这里添加 LayerNorm ===
+        # ==========================================
+        # 对最后一个维度 (6个模式的评分) 进行归一化
+        # 这确保了无论权重的绝对大小如何，这6个模式都在同一起跑线上竞争
+        pattern_logits = F.layer_norm(pattern_logits, (6,))
+        
         # Module B.2: Gumbel-Softmax sampling
         # Forward: one-hot (discrete), Backward: soft (continuous)
         pattern_probs_hard = F.gumbel_softmax(
@@ -293,11 +304,21 @@ class SemiStructuredLinear24(nn.Linear):
         # Compute heterogeneous scores (Module A)
         scores = self._compute_heterogeneous_scores(agent_ids)
 
-        # Apply pattern-based Gumbel-Softmax (Module B)
-        masks, pattern_probs = self._pattern_gumbel_softmax(scores)
-
-        # Store pattern probabilities for diversity loss (Module C)
-        self.last_pattern_probs = pattern_probs.detach()
+        # Apply pattern-based Gumbel-Softmax (Module B) only if pruning is enabled
+        if self.pruning_enabled:
+            masks, pattern_probs = self._pattern_gumbel_softmax(scores)
+            # Store pattern probabilities for diversity loss (Module C)
+            self.last_pattern_probs = pattern_probs.detach()
+        else:
+            # No pruning: use full masks
+            batch_size = x.shape[0]
+            masks = th.ones(batch_size, self.out_features, self.in_features,
+                           device=x.device, dtype=x.dtype)
+            # Store uniform pattern probabilities for diversity loss
+            # Shape: [batch_size, out_features, n_groups, 6]
+            n_groups = self.in_features // 4
+            uniform_probs = th.ones(1, 1, n_groups, 6, device=x.device, dtype=x.dtype) / 6.0
+            self.last_pattern_probs = uniform_probs.repeat(batch_size, self.out_features, 1, 1)
 
         # Apply masks to shared weights
         # masks: [batch_size, out_features, in_features]
@@ -388,6 +409,102 @@ class SemiStructuredLinear24(nn.Linear):
             # Average over batch and features
             return pattern_probs.mean(dim=(0, 1)).mean(dim=0)  # [6]
         return None
+
+    def enable_pruning(self):
+        """Enable 2:4 semi-structured pruning."""
+        self.pruning_enabled = True
+
+    def disable_pruning(self):
+        """Disable pruning (use full weights)."""
+        self.pruning_enabled = False
+
+    def is_pruning_enabled(self):
+        """Check if pruning is enabled."""
+        return self.pruning_enabled
+
+    def apply_sparse_gpt_compensation(self, n_samples=100):
+        """
+        Apply SparseGPT-style weight compensation when first enabling pruning.
+
+        SparseGPT principle: When pruning weights, compensate by updating remaining
+        weights to minimize the change in layer output.
+
+        For 2:4 sparsity, when we decide to prune 2 out of 4 weights in a group,
+        we update the remaining 2 weights to absorb the contribution of pruned weights.
+
+        Args:
+            n_samples: Number of samples to estimate importance (using EMA activations)
+        """
+        if self.pruning_enabled:
+            # Get current mask to determine which weights are kept
+            with th.no_grad():
+                # Sample from all agents to get representative masks
+                agent_ids = th.arange(self.n_agents, device=self.weight.device)
+                scores = self._compute_heterogeneous_scores(agent_ids)
+                masks, _ = self._pattern_gumbel_softmax(scores)
+
+                # Average masks across agents to get pruning pattern
+                # masks: [n_agents, out_features, in_features]
+                avg_mask = masks.mean(dim=0)  # [out_features, in_features]
+
+                # Apply SparseGPT compensation for each 1x4 group
+                # Reshape weight and mask to [out_features, in_features//4, 4]
+                n_groups = self.in_features // 4
+                W = self.weight.data.view(self.out_features, n_groups, 4)
+                M = avg_mask.view(self.out_features, n_groups, 4)
+
+                # For each group, apply compensation
+                for out_idx in range(self.out_features):
+                    for group_idx in range(n_groups):
+                        mask_group = M[out_idx, group_idx]  # [4]
+                        weight_group = W[out_idx, group_idx].clone()  # [4]
+
+                        # Find kept and pruned indices
+                        # Using threshold > 0.5 to determine kept weights
+                        kept_mask = mask_group > 0.5
+                        pruned_mask = mask_group <= 0.5
+
+                        if kept_mask.sum() >= 1 and pruned_mask.sum() >= 1:
+                            # Get indices
+                            kept_idx = th.where(kept_mask)[0]
+                            pruned_idx = th.where(pruned_mask)[0]
+
+                            # SparseGPT compensation: update kept weights to absorb
+                            # the contribution of pruned weights
+                            # We minimize ||W_new - W_old||^2 under the constraint
+                            # that pruned weights become 0
+
+                            # For each kept weight, distribute the pruned weights' contribution
+                            # Simple approach: proportional redistribution
+                            kept_weights = weight_group[kept_idx]
+                            pruned_weights = weight_group[pruned_idx]
+
+                            # Compute total magnitude of pruned weights
+                            pruned_mag = th.abs(pruned_weights).sum()
+
+                            # Distribute pruned magnitude proportionally to kept weights
+                            kept_mag = th.abs(kept_weights).sum()
+                            if kept_mag > 1e-8:
+                                # Scale factor for each kept weight
+                                scale = pruned_mag / kept_mag
+
+                                # Apply compensation: add pruned contribution to kept weights
+                                # Preserve sign information
+                                for i, idx in enumerate(kept_idx):
+                                    sign = th.sign(weight_group[idx])
+                                    W[out_idx, group_idx, idx] = (
+                                        weight_group[idx] + sign * th.abs(weight_group[idx]) * scale
+                                    )
+
+                # Update the weight tensor
+                self.weight.data = W.view(self.out_features, self.in_features)
+                self.sparsegpt_applied = True
+
+    def get_sparsity_with_pruning_control(self):
+        """Get actual sparsity (respects pruning_enabled flag)."""
+        if not self.pruning_enabled:
+            return 0.0  # No pruning when disabled
+        return self.get_sparsity()
 
 
 def create_k24_linear(n_agents, hidden_dim, **kwargs):

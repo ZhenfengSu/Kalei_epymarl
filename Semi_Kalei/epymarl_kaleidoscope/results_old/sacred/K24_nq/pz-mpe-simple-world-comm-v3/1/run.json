@@ -13,17 +13,17 @@
     "name": "pymarl",
     "repositories": [
       {
-        "commit": "fd143e41f9df4149428bd098fe44469451249ed4",
+        "commit": "18064d2e307961e5c3a52823937c4fa81e3e9c2b",
         "dirty": true,
         "url": "https://github.com/ZhenfengSu/Kalei_epymarl.git"
       },
       {
-        "commit": "fd143e41f9df4149428bd098fe44469451249ed4",
+        "commit": "18064d2e307961e5c3a52823937c4fa81e3e9c2b",
         "dirty": true,
         "url": "https://github.com/ZhenfengSu/Kalei_epymarl.git"
       },
       {
-        "commit": "fd143e41f9df4149428bd098fe44469451249ed4",
+        "commit": "18064d2e307961e5c3a52823937c4fa81e3e9c2b",
         "dirty": true,
         "url": "https://github.com/ZhenfengSu/Kalei_epymarl.git"
       }
@@ -43,12 +43,12 @@
       ]
     ]
   },
-  "heartbeat": "2026-01-12T13:38:47.515487",
+  "heartbeat": "2026-01-12T00:03:43.463923",
   "host": {
     "ENV": {},
     "cpu": "AMD EPYC 9554 64-Core Processor",
     "gpus": {
-      "driver_version": "550.54.15",
+      "driver_version": "535.261.03",
       "gpus": [
         {
           "model": "NVIDIA RTX 6000 Ada Generation",
@@ -57,7 +57,7 @@
         }
       ]
     },
-    "hostname": "ubuntu2",
+    "hostname": "ubuntu1",
     "os": [
       "Linux",
       "Linux-5.4.0-216-generic-x86_64-with-glibc2.31"
@@ -107,6 +107,7 @@
   },
   "resources": [],
   "result": null,
-  "start_time": "2026-01-12T13:38:37.511073",
-  "status": "RUNNING"
+  "start_time": "2026-01-11T15:59:08.877386",
+  "status": "COMPLETED",
+  "stop_time": "2026-01-12T00:03:43.446270"
 }
