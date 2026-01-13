@@ -86,7 +86,6 @@ K24_args:
   use_adaptive_reset: False       # Set True for more responsive adaptation
   kl_threshold: 0.1               # KL divergence threshold
 
-
 # ========== MPE-Specific Tuning Notes ==========
 #
 # MPE Environment Characteristics:

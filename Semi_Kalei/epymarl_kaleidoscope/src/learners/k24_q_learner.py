@@ -42,6 +42,13 @@ class K24_QLearner(QLearner):
         self.n_agents = args.n_agents
         self.t_max = args.t_max
 
+        # Pruning schedule
+        self.prune_start_ratio = self.K24_args.get("prune_start_ratio", 0.4)
+        self.use_sparse_gpt_first = self.K24_args.get("use_sparse_gpt_first", True)
+        self.sparse_gpt_steps = self.K24_args.get("sparse_gpt_steps", 100)
+        self.pruning_enabled = False
+        self.sparsegpt_applied = False
+
         # Diversity loss manager
         base_div_coef = self.K24_args.get("div_coef", 0.1)
         deque_len = self.K24_args.get("deque_len", 100)
@@ -64,8 +71,6 @@ class K24_QLearner(QLearner):
     def train(self, batch: EpisodeBatch, t_env: int, episode_num: int):
         """Train the K-2:4 agent for MPE."""
         self.mac.agent.set_require_grads(mode=True)
-
-        # Check if we should enable pruning based on training progress
 
         # Periodic reset
         if (
@@ -207,6 +212,7 @@ class K24_QLearner(QLearner):
             self.logger.log_stat("grad_norm", grad_norm.item(), t_env)
             self.logger.log_stat("temperature", self.mac.agent.fc1.temperature.item(), t_env)
             self.logger.log_stat("progress", progress, t_env)
+            self.logger.log_stat("pruning_enabled", int(self.pruning_enabled), t_env)
 
             mask_elems = mask.sum().item()
             self.logger.log_stat(

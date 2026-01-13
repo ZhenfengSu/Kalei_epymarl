@@ -145,7 +145,7 @@ class K24_RNNAgent_1R3(nn.Module):
         return self.pattern_tracker.collect_patterns()
 
     def _get_linear_weight_sparsities(self):
-        """Calculate sparsity for each layer."""
+        """Calculate sparsity for each layer. """
         sparsities = []
         w_counts = []
         for layer in self.mask_layers:
