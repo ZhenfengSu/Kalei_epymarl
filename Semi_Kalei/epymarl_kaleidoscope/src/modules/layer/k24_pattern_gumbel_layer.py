@@ -255,7 +255,14 @@ class SemiStructuredLinear24(nn.Linear):
         pattern_logits = self.pattern_matrix.project_to_patterns(
             scores_grouped.reshape(-1, 4)
         ).reshape(N, self.out_features, n_groups, 6)
-
+        
+        # ==========================================
+        # === 核心修改：在这里添加 LayerNorm ===
+        # ==========================================
+        # 对最后一个维度 (6个模式的评分) 进行归一化
+        # 这确保了无论权重的绝对大小如何，这6个模式都在同一起跑线上竞争
+        pattern_logits = F.layer_norm(pattern_logits, (6,))
+        
         # Module B.2: Gumbel-Softmax sampling
         # Forward: one-hot (discrete), Backward: soft (continuous)
         pattern_probs_hard = F.gumbel_softmax(

@@ -60,9 +60,70 @@ class K24_QLearner(QLearner):
         # Device
         self.device = "cuda" if args.use_cuda else "cpu"
 
+    def _enable_pruning_with_sparsegpt(self):
+        """
+        Enable pruning with optional SparseGPT compensation.
+
+        This method is called when we reach the prune_start_ratio point in training.
+        It applies SparseGPT compensation to all K24 layers before enabling pruning.
+        """
+        if self.pruning_enabled:
+            return  # Already enabled
+
+        # Get all K24 layers from the agent
+        k24_layers = []
+        if hasattr(self.mac.agent, 'fc1'):
+            k24_layers.append(self.mac.agent.fc1)
+        if hasattr(self.mac.agent, 'fc2'):
+            k24_layers.append(self.mac.agent.fc2)
+        if hasattr(self.mac.agent, 'fc3'):
+            k24_layers.append(self.mac.agent.fc3)
+        if hasattr(self.mac.agent, 'fc4'):
+            k24_layers.append(self.mac.agent.fc4)
+
+        # Apply SparseGPT compensation if enabled
+        if self.use_sparse_gpt_first and not self.sparsegpt_applied:
+            for layer in k24_layers:
+                if hasattr(layer, 'apply_sparse_gpt_compensation'):
+                    layer.apply_sparse_gpt_compensation()
+            self.sparsegpt_applied = True
+
+        # Enable pruning for all layers
+        for layer in k24_layers:
+            if hasattr(layer, 'enable_pruning'):
+                layer.enable_pruning()
+
+        self.pruning_enabled = True
+
+    def _check_pruning_schedule(self, t_env):
+        """
+        Check if we should enable pruning based on training progress.
+
+        Args:
+            t_env: Current training timestep
+
+        Returns:
+            True if pruning was just enabled in this call
+        """
+        if self.pruning_enabled:
+            return False
+
+        # Calculate progress (0 to 1)
+        progress = t_env / self.t_max
+
+        # Check if we've reached the pruning start point
+        if progress >= self.prune_start_ratio:
+            self._enable_pruning_with_sparsegpt()
+            return True
+
+        return False
+
     def train(self, batch: EpisodeBatch, t_env: int, episode_num: int):
         """Train the K-2:4 agent for MPE."""
         self.mac.agent.set_require_grads(mode=True)
+
+        # Check if we should enable pruning based on training progress
+        pruning_just_enabled = self._check_pruning_schedule(t_env)
 
         # Periodic reset
         if (
@@ -204,6 +265,7 @@ class K24_QLearner(QLearner):
             self.logger.log_stat("grad_norm", grad_norm.item(), t_env)
             self.logger.log_stat("temperature", self.mac.agent.fc1.temperature.item(), t_env)
             self.logger.log_stat("progress", progress, t_env)
+            self.logger.log_stat("pruning_enabled", int(self.pruning_enabled), t_env)
 
             mask_elems = mask.sum().item()
             self.logger.log_stat(
