@@ -1,21 +1,18 @@
 {
   "K24_args": {
     "anneal_end": 0.8,
-    "anneal_end_step": 2400000,
-    "anneal_start": 0.4,
+    "anneal_end_step": 400000,
+    "anneal_start": 0.0,
     "deque_len": 100,
     "div_coef": 0.1,
-    "ema_momentum": 0.9,
+    "ema_momentum": 0.99,
     "hetero_init_scale": 0.01,
     "kl_threshold": 0.1,
-    "prune_start_ratio": 0.4,
     "reset_interval": 10000,
     "reset_ratio": 0.1,
-    "sparse_gpt_steps": 100,
     "temperature_init": 5.0,
-    "temperature_min": 0.2,
-    "use_adaptive_reset": false,
-    "use_sparse_gpt_first": true
+    "temperature_min": 0.1,
+    "use_adaptive_reset": false
   },
   "action_selector": "epsilon_greedy",
   "add_value_last_step": true,

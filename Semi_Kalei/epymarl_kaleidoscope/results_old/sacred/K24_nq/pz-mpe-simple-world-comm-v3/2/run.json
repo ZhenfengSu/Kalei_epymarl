@@ -43,12 +43,12 @@
       ]
     ]
   },
-  "heartbeat": "2026-01-12T13:45:17.924201",
+  "heartbeat": "2026-01-12T03:52:30.564957",
   "host": {
     "ENV": {},
     "cpu": "AMD EPYC 9554 64-Core Processor",
     "gpus": {
-      "driver_version": "550.54.15",
+      "driver_version": "535.261.03",
       "gpus": [
         {
           "model": "NVIDIA RTX 6000 Ada Generation",
@@ -57,7 +57,7 @@
         }
       ]
     },
-    "hostname": "ubuntu2",
+    "hostname": "ubuntu1",
     "os": [
       "Linux",
       "Linux-5.4.0-216-generic-x86_64-with-glibc2.31"
@@ -71,7 +71,7 @@
         "key": "pz-mpe-simple-world-comm-v3",
         "time_limit": 25
       },
-      "seed": 0
+      "seed": 1
     },
     "named_configs": [],
     "options": {
@@ -99,7 +99,7 @@
       "UPDATE": [
         "env_args.time_limit=25",
         "env_args.key=pz-mpe-simple-world-comm-v3",
-        "seed=0"
+        "seed=1"
       ],
       "help": false,
       "with": true
@@ -107,6 +107,6 @@
   },
   "resources": [],
   "result": null,
-  "start_time": "2026-01-12T13:38:37.511073",
+  "start_time": "2026-01-12T00:03:46.126251",
   "status": "RUNNING"
 }

@@ -1,23 +1,26 @@
-[INFO 15:59:08] pymarl Running command 'my_main'
-[INFO 15:59:08] pymarl Started run with ID "1"
-[DEBUG 15:59:08] pymarl Starting Heartbeat
-[DEBUG 15:59:08] my_main Started
-[INFO 15:59:08] my_main Experiment Parameters:
-[INFO 15:59:08] my_main 
+[INFO 13:38:37] pymarl Running command 'my_main'
+[INFO 13:38:37] pymarl Started run with ID "1"
+[DEBUG 13:38:37] pymarl Starting Heartbeat
+[DEBUG 13:38:37] my_main Started
+[INFO 13:38:37] my_main Experiment Parameters:
+[INFO 13:38:37] my_main 
 
 {   'K24_args': {   'anneal_end': 0.8,
-                    'anneal_end_step': 400000,
-                    'anneal_start': 0.0,
+                    'anneal_end_step': 2400000,
+                    'anneal_start': 0.4,
                     'deque_len': 100,
                     'div_coef': 0.1,
-                    'ema_momentum': 0.99,
+                    'ema_momentum': 0.9,
                     'hetero_init_scale': 0.01,
                     'kl_threshold': 0.1,
+                    'prune_start_ratio': 0.4,
                     'reset_interval': 10000,
                     'reset_ratio': 0.1,
+                    'sparse_gpt_steps': 100,
                     'temperature_init': 5.0,
-                    'temperature_min': 0.1,
-                    'use_adaptive_reset': False},
+                    'temperature_min': 0.2,
+                    'use_adaptive_reset': False,
+                    'use_sparse_gpt_first': True},
     'action_selector': 'epsilon_greedy',
     'add_value_last_step': True,
     'agent': 'k24_rnn_1R3',
@@ -93,8 +96,20 @@
   warnings.warn(
 /root/anaconda3/envs/mpe/lib/python3.11/site-packages/pettingzoo/utils/conversions.py:144: UserWarning: The `observation_spaces` dictionary is deprecated. Use the `observation_space` function instead.
   warnings.warn(
-[INFO 15:59:09] my_main Beginning training for 3050000 timesteps
+[INFO 13:38:37] my_main Beginning training for 3050000 timesteps
 /root/anaconda3/envs/mpe/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:245: UserWarning: [33mWARN: The reward returned by `step()` must be a float, int, np.integer or np.floating, actual type: <class 'list'>[0m
   logger.warn(
-[INFO 15:59:09] my_main t_env: 25 / 3050000
-[INFO 15:59:09] my_main Estimated time left: 24 seconds. Time passed: 0 seconds
+[INFO 13:38:38] my_main t_env: 25 / 3050000
+[INFO 13:38:38] my_main Estimated time left: 12 seconds. Time passed: 0 seconds
+[INFO 13:44:10] my_main Recent Stats | t_env:      50000 | Episode:     2000
+div_coef:                  8.3951	div_loss:                  0.0111	ep_length_mean:           25.0000	epsilon:                   0.2400
+grad_norm:                20.6773	loss:                      1.5752	loss_td:                   1.4819	overall_sparsity:          0.0000
+pattern_0_prob:            0.1667	pattern_1_prob:            0.1667	pattern_2_prob:            0.1667	pattern_3_prob:            0.1667
+pattern_4_prob:            0.1667	pattern_5_prob:            0.1667	pattern_entropy:           0.0000	pattern_max_similarity:    0.1667
+pattern_mean_similarity:   0.1667	progress:                  0.0090	pruning_enabled:           0.0000	q_taken_mean:              0.2610
+return_mean:             -10.2000	return_std:               43.3955	sparsity_layer_0:          0.0000	sparsity_layer_1:          0.0000
+sparsity_layer_2:          0.0000	sparsity_layer_3:          0.0000	target_mean:               0.3497	td_error_abs:              0.8542
+temperature:               5.0000	test_ep_length_mean:      25.0000	test_return_mean:        -341.1755	test_return_std:         155.9434
+
+[INFO 13:44:11] my_main t_env: 50025 / 3050000
+[INFO 13:44:11] my_main Estimated time left: 5 hours, 33 minutes, 6 seconds. Time passed: 5 minutes, 33 seconds

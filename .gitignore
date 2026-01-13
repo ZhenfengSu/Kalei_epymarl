@@ -163,3 +163,8 @@ cython_debug/
 baseline/epymarl_kaleidoscope/results/**
 
 Semi_Kalei/epymarl_kaleidoscope/results/**
+Semi_Kalei/epymarl_kaleidoscope/results/sacred/**
+Semi_Kalei/epymarl_kaleidoscope/results/sacred/K24_nq/pz-mpe-simple-world-comm-v3/1/metrics.json
+Semi_Kalei/epymarl_kaleidoscope/results/sacred/K24_nq/pz-mpe-simple-world-comm-v3/1/**
+Semi_Kalei/epymarl_kaleidoscope/results/sacred/K24_nq/pz-mpe-simple-world-comm-v3/1/cout.txt
+Semi_Kalei/epymarl_kaleidoscope/results/sacred/K24_nq/pz-mpe-simple-world-comm-v3/1/**
