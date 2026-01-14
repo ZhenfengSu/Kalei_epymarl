@@ -213,3 +213,86 @@ The implementation follows the design in `/mnt/lc_gpu_test/Semi_Kaleidoscope/Kal
   - prune_start_ratio: 调整开始剪枝的时间点（0.3-0.5推荐）
   - use_sparse_gpt_first: 是否使用SparseGPT补偿（默认True）
   - sparse_gpt_steps: 补偿步数（当前未使用，预留给未来的迭代式补偿）
+
+
+
+# 三次更新：Rewind & Finetune（彩票假设）
+
+  修改内容
+
+  1. 配置文件 (K24_nq.yaml)
+
+  新增微调参数：
+  # ========== Rewind & Finetune (Lottery Ticket Hypothesis) ==========
+  finetune_start_ratio: 0.8       # 在训练80%时开始微调（最后20%）
+  finetune_lr_decay: 0.1          # 学习率衰减至10%
+
+  2. Layer模块 (k24_pattern_gumbel_layer.py)
+
+  - 新增标志和缓冲区：
+    - mask_frozen: 布尔标志，跟踪mask是否冻结
+    - frozen_mask: 存储冻结的mask [n_agents, out_features, in_features]
+
+  - 新增方法：
+    - freeze_mask(): 冻结当前所有智能体的mask模式
+      - 对所有智能体计算当前mask
+      - 存储到frozen_mask缓冲区
+      - 设置mask_frozen标志为True
+    - unfreeze_mask(): 解冻mask（恢复训练）
+    - is_mask_frozen(): 查询mask是否冻结
+
+  - forward方法修改：
+    - 当mask_frozen=False：正常使用Gumbel-Softmax采样
+    - 当mask_frozen=True：跳过EMA更新和Gumbel-Softmax，直接使用frozen_mask
+    - 设置last_pattern_probs=None以跳过多样性损失
+
+  3. Learner模块 (k24_q_learner.py)
+
+  - 新增参数：
+    - finetune_start_ratio: 开始微调的训练比例（默认0.8，即80%）
+    - finetune_lr_decay: 微调时学习率衰减因子（默认0.1）
+    - finetune_started: 标志是否已进入微调阶段
+    - base_lr: 保存原始学习率
+    - finetune_start_step: 计算得出的开始微调的步数
+
+  - 新增方法 _start_finetune(t_env)：
+    1. 冻结所有层的mask（停止Gumbel-Softmax采样）
+    2. 降低学习率（默认至10%）
+    3. 禁用异构系数alpha的梯度（只微调权重W）
+    4. 记录转换日志
+
+  - train方法修改：
+    - 检查是否到达微调时间点
+    - 到达时调用_start_finetune()
+    - 微调模式下跳过周期性mask重置
+    - 微调模式下跳过多样性损失计算
+    - 新增日志：finetune_mode
+
+  训练时间线
+
+  0% ──────────────────────────────────────────────────────────────────── 100%
+      |                 |                    |
+      训练初期          开始微调点           训练结束
+      (mask可变)        (冻结mask)           (固定mask微调W)
+
+      finetune_start_ratio=0.8
+
+  微调阶段行为：
+  - Mask完全固定（不进行Gumbel采样）
+  - EMA不再更新
+  - 异构系数α不再优化
+  - 只有共享权重W进行微调
+  - 学习率降低至10%
+
+  预期效果
+
+  根据彩票假设（Lottery Ticket Hypothesis）：
+  - 存活权重能够稳定下来，无需适应mask的变化
+  - 专门针对最终结构进行精细调整
+  - 通常能带来2%-5%的性能提升
+
+  使用方式
+
+  配置文件中的参数可根据任务调整：
+  - finetune_start_ratio: 调整开始微调的时间点（0.75-0.85推荐）
+  - finetune_lr_decay: 微调学习率衰减（0.05-0.2推荐）

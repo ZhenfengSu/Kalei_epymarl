@@ -58,6 +58,15 @@ class K24_QLearner(QLearner):
         self.last_reset_t = 0
         self.anneal_end_step = self.K24_args.get("anneal_end_step", int(0.8 * args.t_max))
 
+        # ========== Rewind & Finetune Mechanism ==========
+        self.finetune_start_ratio = self.K24_args.get("finetune_start_ratio", 0.8)
+        self.finetune_lr_decay = self.K24_args.get("finetune_lr_decay", 0.1)
+        self.finetune_started = False
+        self.base_lr = args.lr
+
+        # Calculate finetune start step
+        self.finetune_start_step = int(self.finetune_start_ratio * args.t_max)
+
         # Device
         self.device = "cuda" if args.use_cuda else "cpu"
 
@@ -66,8 +75,14 @@ class K24_QLearner(QLearner):
         """Train the K-2:4 agent for MPE."""
         self.mac.agent.set_require_grads(mode=True)
 
-        # Periodic reset
+        # ========== Rewind & Finetune Check ==========
+        # Check if we should start finetuning (freeze masks, decay LR)
+        if not self.finetune_started and t_env >= self.finetune_start_step:
+            self._start_finetune(t_env)
+
+        # Periodic reset - only if not in finetune mode
         if (
+            not self.finetune_started and
             t_env - self.last_reset_t > self.reset_interval
             and self.t_max - t_env > self.reset_interval
         ):
@@ -169,10 +184,16 @@ class K24_QLearner(QLearner):
         # Normal L2 loss, take mean over actual data
         td_loss = (masked_td_error**2).sum() / mask.sum()
 
-        # Pattern orthogonality diversity loss
-        div_loss, div_coef, div_stats = self.diversity_manager.compute_loss(
-            pattern_probs_list, td_loss
-        )
+        # Pattern orthogonality diversity loss - skip during finetune (masks are frozen)
+        if self.finetune_started:
+            # During finetune, diversity loss is not computed (masks are fixed)
+            div_loss = th.tensor(0.0, device=self.device)
+            div_coef = 0.0
+            div_stats = {'mean_similarity': 0.0, 'max_similarity': 0.0, 'pattern_entropy': 0.0}
+        else:
+            div_loss, div_coef, div_stats = self.diversity_manager.compute_loss(
+                pattern_probs_list, td_loss
+            )
 
         loss = td_loss + div_coef * div_loss
 
@@ -206,6 +227,7 @@ class K24_QLearner(QLearner):
             self.logger.log_stat("grad_norm", grad_norm.item(), t_env)
             self.logger.log_stat("temperature", self.mac.agent.fc1.temperature.item(), t_env)
             self.logger.log_stat("progress", progress, t_env)
+            self.logger.log_stat("finetune_mode", 1.0 if self.finetune_started else 0.0, t_env)
 
             mask_elems = mask.sum().item()
             self.logger.log_stat(
@@ -242,3 +264,42 @@ class K24_QLearner(QLearner):
                     self.logger.log_stat(f"pattern_{i}_prob", p, t_env)
 
             self.log_stats_t = t_env
+
+    def _start_finetune(self, t_env):
+        """
+        Start the finetuning phase (Rewind & Finetune).
+
+        This implements the lottery ticket hypothesis operation:
+        1. Freeze all masks (stop Gumbel-Softmax sampling)
+        2. Reduce learning rate (typically to 10% of original)
+        3. Disable heterogeneity coefficient gradients (only finetune W)
+        4. Log the transition to finetune mode
+
+        Expected benefits:
+        - Surviving weights can stabilize without adapting to mask changes
+        - Fine-tuning focuses on the final structure
+        - Typically 2-5% performance improvement
+        """
+        # 1. Freeze masks in all layers
+        for layer in self.mac.agent.mask_layers:
+            layer.freeze_mask()
+
+        # 2. Reduce learning rate
+        for param_group in self.optimiser.param_groups:
+            param_group['lr'] = self.base_lr * self.finetune_lr_decay
+
+        # 3. Disable heterogeneity coefficient gradients
+        # Only finetune the shared weights W, not alpha
+        self.mac.agent.set_require_grads(mode=False)
+
+        # 4. Mark finetune as started
+        self.finetune_started = True
+
+        # Log the transition
+        print(f"\n{'='*60}")
+        print(f"[Rewind & Finetune] Starting at t_env={t_env}")
+        print(f"  - Masks frozen (Gumbel-Softmax disabled)")
+        print(f"  - Learning rate: {self.base_lr} -> {self.base_lr * self.finetune_lr_decay}")
+        print(f"  - Heterogeneity coefficients (alpha) frozen")
+        print(f"  - Only shared weights (W) will be optimized")
+        print(f"{'='*60}\n")

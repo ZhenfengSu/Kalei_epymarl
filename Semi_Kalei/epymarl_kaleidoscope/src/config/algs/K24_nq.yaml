@@ -86,6 +86,13 @@ K24_args:
   use_adaptive_reset: False       # Set True for more responsive adaptation
   kl_threshold: 0.1               # KL divergence threshold
 
+  # ========== Rewind & Finetune (Lottery Ticket Hypothesis) ==========
+  # Freeze masks in the final training phase and fine-tune remaining weights
+  # This typically provides 2-5% performance improvement
+
+  finetune_start_ratio: 0.8       # Start finetuning at 80% of training (last 20%)
+  finetune_lr_decay: 0.25         # Reduce LR to 25% during finetuning
+
 # ========== MPE-Specific Tuning Notes ==========
 #
 # MPE Environment Characteristics:

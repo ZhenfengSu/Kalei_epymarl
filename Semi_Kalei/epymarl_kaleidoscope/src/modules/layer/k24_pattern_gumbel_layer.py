@@ -177,6 +177,11 @@ class SemiStructuredLinear24(nn.Linear):
         # For adaptive reset mechanism
         self.hetero_init_scale = hetero_init_scale
 
+        # ========== Rewind & Finetune Mechanism ==========
+        # Mask freezing for lottery ticket hypothesis style finetuning
+        self.mask_frozen = False
+        self.register_buffer('frozen_mask', None)  # Will store frozen masks per agent
+
     def _compute_heterogeneous_scores(self, agent_ids):
         """
         Module A: Dynamic Heterogeneous Scoring
@@ -294,17 +299,20 @@ class SemiStructuredLinear24(nn.Linear):
         Returns:
             output: [batch_size, out_features] layer output
         """
-        # Update EMA statistics (Module A)
-        self.ema_tracker.update(x)
-
-        # Compute heterogeneous scores (Module A)
-        scores = self._compute_heterogeneous_scores(agent_ids)
-
-        # Apply pattern-based Gumbel-Softmax (Module B)
-        masks, pattern_probs = self._pattern_gumbel_softmax(scores)
-
-        # Store pattern probabilities for diversity loss (Module C)
-        self.last_pattern_probs = pattern_probs.detach()
+        # Update EMA statistics (Module A) - only if mask not frozen
+        if not self.mask_frozen:
+            self.ema_tracker.update(x)
+            # Compute heterogeneous scores (Module A)
+            scores = self._compute_heterogeneous_scores(agent_ids)
+            # Apply pattern-based Gumbel-Softmax (Module B)
+            masks, pattern_probs = self._pattern_gumbel_softmax(scores)
+            # Store pattern probabilities for diversity loss (Module C)
+            self.last_pattern_probs = pattern_probs.detach()
+        else:
+            # Use frozen mask during finetuning
+            masks = self.frozen_mask[agent_ids]  # [batch_size, out_features, in_features]
+            # Set pattern probs to None to indicate diversity loss should be skipped
+            self.last_pattern_probs = None
 
         # Apply masks to shared weights
         # masks: [batch_size, out_features, in_features]
@@ -395,6 +403,52 @@ class SemiStructuredLinear24(nn.Linear):
             # Average over batch and features
             return pattern_probs.mean(dim=(0, 1)).mean(dim=0)  # [6]
         return None
+
+    # ========== Rewind & Finetune Methods ==========
+
+    def freeze_mask(self):
+        """
+        Freeze the current mask pattern for all agents.
+
+        This implements the lottery ticket hypothesis "rewind" step:
+        - Samples the current mask for all agents
+        - Stores the mask in frozen_mask buffer
+        - Sets mask_frozen flag to True
+
+        During finetuning:
+        - Gumbel-Softmax is disabled
+        - EMA update is disabled
+        - The frozen mask is used directly
+        - Only weights W are optimized, not heterogeneity coefficients alpha
+        """
+        with th.no_grad():
+            # Get agent IDs for all agents
+            agent_ids = th.arange(self.n_agents, device=self.weight.device)
+
+            # Compute scores for all agents
+            scores = self._compute_heterogeneous_scores(agent_ids)
+
+            # Get current masks (using Gumbel-Softmax)
+            masks, _ = self._pattern_gumbel_softmax(scores)
+
+            # Store masks per agent [n_agents, out_features, in_features]
+            self.frozen_mask = masks.clone()
+
+            # Set frozen flag
+            self.mask_frozen = True
+
+    def unfreeze_mask(self):
+        """
+        Unfreeze the mask (restore normal training).
+
+        This allows resuming mask exploration if needed.
+        """
+        self.mask_frozen = False
+        self.frozen_mask = None
+
+    def is_mask_frozen(self):
+        """Check if mask is currently frozen."""
+        return self.mask_frozen
 
 
 def create_k24_linear(n_agents, hidden_dim, **kwargs):
