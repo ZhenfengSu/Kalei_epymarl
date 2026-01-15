@@ -90,8 +90,8 @@ K24_args:
   # Freeze masks in the final training phase and fine-tune remaining weights
   # This typically provides 2-5% performance improvement
 
-  finetune_start_ratio: 0.0       # Start finetuning at 0% of training (last 20%)
-  finetune_lr_decay: 0.8         # Reduce LR to 80% during finetuning
+  finetune_start_ratio: 0.7       # Start finetuning at 70% of training (last 30%)
+  finetune_lr_decay: 0.9         # Reduce LR to 90% during finetuning
 
 # ========== MPE-Specific Tuning Notes ==========
 #
