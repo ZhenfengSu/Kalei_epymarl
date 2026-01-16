@@ -176,21 +176,10 @@ class QLearner:
             self.log_stats_t = t_env
 
     def _update_targets_hard(self):
-        # self.target_mac.load_state(self.mac)
-        # if self.mixer is not None:
-        #     self.target_mixer.load_state_dict(self.mixer.state_dict())
-        # 修改前: self.target_mac.load_state(self.mac)
-        # 修改后: 直接对 agent 进行 load_state_dict，并开启 strict=False
-        
-        # 1. 加载 Agent 的参数，忽略多余的 frozen_mask
-        self.target_mac.agent.load_state_dict(
-            self.mac.agent.state_dict(), 
-            strict=False
-        )
-        
-        # 2. 加载 Mixer 的参数 (如果有)
+        self.target_mac.load_state(self.mac)
         if self.mixer is not None:
             self.target_mixer.load_state_dict(self.mixer.state_dict())
+
 
     def _update_targets_soft(self, tau):
         for target_param, param in zip(

@@ -69,6 +69,7 @@ class K24_QLearner(QLearner):
 
         # Device
         self.device = "cuda" if args.use_cuda else "cpu"
+        self.target_mac = copy.deepcopy(mac)
 
 
     def train(self, batch: EpisodeBatch, t_env: int, episode_num: int):
@@ -268,35 +269,59 @@ class K24_QLearner(QLearner):
     def _start_finetune(self, t_env):
         """
         Start the finetuning phase (Rewind & Finetune).
-
-        This implements the lottery ticket hypothesis operation:
-        1. Freeze all masks (stop Gumbel-Softmax sampling)
-        2. Reduce learning rate (typically to 10% of original)
-        3. Disable heterogeneity coefficient gradients (only finetune W)
-        4. Log the transition to finetune mode
-
-        Expected benefits:
-        - Surviving weights can stabilize without adapting to mask changes
-        - Fine-tuning focuses on the final structure
-        - Typically 2-5% performance improvement
+        Fixed: Syncs target network and resets optimizer to prevent explosion.
         """
-        # 1. Freeze masks in all layers
+        print(f"\n{'='*60}")
+        print(f"[Rewind & Finetune] Starting at t_env={t_env}")
+        
+        # 1. Freeze masks in Online Network (MAC)
+        # -------------------------------------------------
         for layer in self.mac.agent.mask_layers:
             layer.freeze_mask()
+        print(f"  - Online Network masks frozen")
 
-        # 2. Reduce learning rate
-        for param_group in self.optimiser.param_groups:
-            param_group['lr'] = self.base_lr * self.finetune_lr_decay
+        # 2. Synchronize Target Network (CRITICAL FIX)
+        # -------------------------------------------------
+        # 我们必须确保 Target Network 也进入冻结状态，且使用完全相同的 Mask
+        # 首先，进行一次 Hard Update，把权重和 buffer (frozen_mask) 同步过去
+        self._update_targets_hard()
+        
+        # 其次，手动设置 Target Network 的 mask_frozen 标志
+        # 因为 load_state_dict 通常不包含 python 的布尔属性
+        for target_layer, online_layer in zip(self.target_mac.agent.mask_layers, self.mac.agent.mask_layers):
+            target_layer.mask_frozen = True
+            # 再次确保 mask 内容一致 (双重保险)
+            if online_layer.frozen_mask is not None:
+                target_layer.frozen_mask = online_layer.frozen_mask.clone()
+        
+        print(f"  - Target Network synced and frozen (Identical Masks)")
 
-        # 3. Disable heterogeneity coefficient gradients
-        # Only finetune the shared weights W, not alpha
+        # 3. Reduce Learning Rate & Reset Optimizer (CRITICAL FIX)
+        # -------------------------------------------------
+        # 仅仅修改 param_group['lr'] 是不够的，必须清除 Adam 的 state
+        # 否则旧的动量(momentum)会导致权重在新的 Loss 地形上乱飞
+        
+        new_lr = self.base_lr * self.finetune_lr_decay
+        
+        # 重建优化器 (最彻底的清除状态方法)
+        # 注意：这里假设 self.params 是在 __init__ 中定义的
+        self.optimiser = Adam(params=self.params, lr=new_lr)
+        
+        # 或者，如果你不想重建对象，可以手动清除状态：
+        # self.optimiser.state.clear()
+        # for group in self.optimiser.param_groups:
+        #     group['lr'] = new_lr
+            
+        print(f"  - Optimizer reset. Learning rate: {self.base_lr} -> {new_lr}")
+
+        # 4. Disable Heterogeneity Gradients
+        # -------------------------------------------------
         self.mac.agent.set_require_grads(mode=False)
-
-        # 4. Mark finetune as started
+        print(f"  - Heterogeneity coefficients (alpha) frozen")
+        print(f"  - Only shared weights (W) will be optimized")
+        
         self.finetune_started = True
-
-        # Log the transition
-        print(f"\n{'='*60}")
+        print(f"{'='*60}\n")
         print(f"[Rewind & Finetune] Starting at t_env={t_env}")
         print(f"  - Masks frozen (Gumbel-Softmax disabled)")
         print(f"  - Learning rate: {self.base_lr} -> {self.base_lr * self.finetune_lr_decay}")

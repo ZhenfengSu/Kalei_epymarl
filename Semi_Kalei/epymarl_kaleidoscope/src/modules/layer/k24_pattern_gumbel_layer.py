@@ -180,7 +180,9 @@ class SemiStructuredLinear24(nn.Linear):
         # ========== Rewind & Finetune Mechanism ==========
         # Mask freezing for lottery ticket hypothesis style finetuning
         self.mask_frozen = False
-        self.register_buffer('frozen_mask', None)  # Will store frozen masks per agent
+        # self.register_buffer('frozen_mask', None)  # Will store frozen masks per agent
+        # frozen_mask初始化的时候初始化为和linear.weight同样的shape的全一tensor
+        self.register_buffer('frozen_mask', th.ones(n_agents, self.out_features, self.in_features))
 
     def _compute_heterogeneous_scores(self, agent_ids):
         """
