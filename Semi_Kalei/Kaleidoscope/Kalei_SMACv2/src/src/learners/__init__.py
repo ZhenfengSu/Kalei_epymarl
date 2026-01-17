@@ -10,7 +10,7 @@ from .max_q_learner import MAXQLearner
 from .dmaq_qatten_learner import DMAQ_qattenLearner
 from .offpg_learner import OffPGLearner
 from .fmac_learner import FMACLearner
-from .k24_nq_learner import K24_NQLearner
+
 REGISTRY = {}
 
 REGISTRY["q_learner"] = QLearner
@@ -25,4 +25,3 @@ REGISTRY["max_q_learner"] = MAXQLearner
 REGISTRY["dmaq_qatten_learner"] = DMAQ_qattenLearner
 REGISTRY["offpg_learner"] = OffPGLearner
 REGISTRY["fmac_learner"] = FMACLearner
-REGISTRY["k24_nq_learner"] = K24_NQLearner

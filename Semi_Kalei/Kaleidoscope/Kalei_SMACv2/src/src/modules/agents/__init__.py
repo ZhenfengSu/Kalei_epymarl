@@ -13,7 +13,6 @@ from .ff_agent import FFAgent
 from .central_rnn_agent import CentralRNNAgent
 from .mlp_agent import MLPAgent
 from .atten_rnn_agent import ATTRNNAgent
-from .k24_rnn_agent import K24_type_NRNNAgent_1R3
 
 REGISTRY["rnn"] = RNNAgent
 REGISTRY["n_rnn"] = NRNNAgent
@@ -27,4 +26,3 @@ REGISTRY["ff"] = FFAgent
 REGISTRY["central_rnn"] = CentralRNNAgent
 REGISTRY["mlp"] = MLPAgent
 REGISTRY["att_rnn"] = ATTRNNAgent
-REGISTRY["k24_type_rnn_1R3"] = K24_type_NRNNAgent_1R3

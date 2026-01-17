@@ -41,7 +41,6 @@ For example, run Kaleidoscope on Zerg5v5:
 
 ```shell
 python src/main.py --config=Kalei_qmix_rnn_1R3 --env-config=sc2_gen_zerg --exp-config=zerg_5v5_10M_s0
-python src/main.py --config=K24_nq --env-config=sc2_gen_zerg --exp-config=zerg_5v5_10M_s0
 ```
 
 

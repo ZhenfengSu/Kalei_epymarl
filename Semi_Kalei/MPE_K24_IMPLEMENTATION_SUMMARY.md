@@ -163,57 +163,12 @@ The implementation follows the design in `/mnt/lc_gpu_test/Semi_Kaleidoscope/Kal
   修改内容
 
   1. 配置文件 (K24_nq.yaml)
-
-  新增剪枝调度参数：
-  # ========== Pruning Schedule ==========
-  prune_start_ratio: 0.4          # 在训练40%时开始剪枝（可调）
-  use_sparse_gpt_first: True      # 首次剪枝使用SparseGPT补偿
-  sparse_gpt_steps: 100           # SparseGPT补偿步数
-
-  2. Layer模块 (k24_pattern_gumbel_layer.py)
-
-  - 剪枝控制标志：添加 pruning_enabled 和 sparsegpt_applied 标志
-  - forward方法修改：剪枝禁用时使用全1掩码（不剪枝），启用时使用Gumbel-Softmax
-  - SparseGPT补偿：实现 apply_sparse_gpt_compensation() 方法
-    - 当剪枝权重时，将剪掉权重的贡献按比例分配给保留的权重
-    - 最小化 ||W_new - W_old||^2 以保持网络输出一致
-  - 控制方法：
-    - enable_pruning() - 启用剪枝
-    - disable_pruning() - 禁用剪枝
-    - get_sparsity_with_pruning_control() - 获取当前稀疏度（考虑剪枝开关）
-
-  3. Learner模块 (k24_q_learner.py)
-
-  - 剪枝调度逻辑：
-    - _check_pruning_schedule(t_env) - 检查是否到达剪枝开始时间
-    - _enable_pruning_with_sparsegpt() - 应用SparseGPT补偿并启用剪枝
-  - 训练流程：
-    - 训练初期（0-40%）：剪枝禁用，使用全量权重训练
-    - 到达40%时：应用SparseGPT补偿，然后启用剪枝
-    - 后续训练：使用常规Gumbel-Softmax剪枝
-  - 日志：添加 pruning_enabled 状态记录
-
-  4. Agent模块 (k24_rnn_agent.py)
-
-  - 修改 _get_linear_weight_sparsities() 使用 get_sparsity_with_pruning_control()
-  - 确保日志中稀疏度正确反映剪枝状态
-
-  训练时间线
-
-  0% ──────────────────────────────────────────────────────────────────── 100%
-      |                 |                    |
-      训练初期          开始剪枝点           训练结束
-      (不剪枝)          (应用SparseGPT)      (继续剪枝)
-
-      prune_start_ratio=0.4
-
-  使用方式
-
-  配置文件中的参数可根据任务调整：
-  - prune_start_ratio: 调整开始剪枝的时间点（0.3-0.5推荐）
-  - use_sparse_gpt_first: 是否使用SparseGPT补偿（默认True）
-  - sparse_gpt_steps: 补偿步数（当前未使用，预留给未来的迭代式补偿）
-
+  temperature_init: 5.0           # Initial temperature
+  temperature_min: 0.2            # Minimum temperature
+  anneal_start: 0.0               # Start annealing at training start
+  anneal_end: 0.8                 # Complete annealing at 80% progress
+  anneal_end_step: 2400000         # End step (0.8 * t_max for 5000K timesteps)
+  2. 在gumble softmax采样中使用更稳定的logits计算方式，通过添加layer normalization来稳定训练过程。
 
 
 # 三次更新：Rewind & Finetune（彩票假设）

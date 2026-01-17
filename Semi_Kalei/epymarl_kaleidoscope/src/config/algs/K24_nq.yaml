@@ -55,7 +55,7 @@ K24_args:
   temperature_min: 0.2            # Minimum temperature
   anneal_start: 0.0               # Start annealing at training start
   anneal_end: 0.8                 # Complete annealing at 80% progress
-  anneal_end_step: 2400000         # End step (0.8 * t_max for 500K timesteps)
+  anneal_end_step: 2400000         # End step (0.8 * t_max for 5000K timesteps)
 
   # ========== EMA Activation Tracking ==========
   # MPE has relatively stable state distributions
