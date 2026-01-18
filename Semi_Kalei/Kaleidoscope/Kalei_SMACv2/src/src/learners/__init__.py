@@ -5,6 +5,7 @@ from .ppo_learner import PPOLearner
 from .lica_learner import LICALearner
 from .nq_learner import NQLearner
 from .Kalei_nq_learner import Kalei_NQLearner
+from .k24_nq_learner import K24_NQLearner
 from .policy_gradient_v2 import PGLearner_v2
 from .max_q_learner import MAXQLearner
 from .dmaq_qatten_learner import DMAQ_qattenLearner
@@ -20,6 +21,7 @@ REGISTRY["ppo_learner"] = PPOLearner
 REGISTRY["lica_learner"] = LICALearner
 REGISTRY["nq_learner"] = NQLearner
 REGISTRY["Kalei_nq_learner"] = Kalei_NQLearner
+REGISTRY["k24_nq_learner"] = K24_NQLearner
 REGISTRY["policy_gradient_v2"] = PGLearner_v2
 REGISTRY["max_q_learner"] = MAXQLearner
 REGISTRY["dmaq_qatten_learner"] = DMAQ_qattenLearner

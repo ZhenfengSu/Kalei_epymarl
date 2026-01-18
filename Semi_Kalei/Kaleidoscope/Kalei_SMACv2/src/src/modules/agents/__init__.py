@@ -5,6 +5,7 @@ from .n_rnn_agent import (
     NRNNAgent,
     NRNNAgent_1R3,
     Kalei_type_NRNNAgent_1R3,
+    K24_type_NRNNAgent_1R3,
 )
 from .nops_rnn_agent import NoPSRNNAgent, NoPSRNNAgent_1R3
 from .rnn_ppo_agent import RNNPPOAgent
@@ -18,6 +19,7 @@ REGISTRY["rnn"] = RNNAgent
 REGISTRY["n_rnn"] = NRNNAgent
 REGISTRY["n_rnn_1R3"] = NRNNAgent_1R3
 REGISTRY["Kalei_type_n_rnn_1R3"] = Kalei_type_NRNNAgent_1R3
+REGISTRY["K24_type_n_rnn_1R3"] = K24_type_NRNNAgent_1R3
 REGISTRY["nops_rnn"] = NoPSRNNAgent
 REGISTRY["nops_rnn_1R3"] = NoPSRNNAgent_1R3
 REGISTRY["rnn_ppo"] = RNNPPOAgent

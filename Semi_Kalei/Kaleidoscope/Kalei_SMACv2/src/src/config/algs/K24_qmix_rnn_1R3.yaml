@@ -1,0 +1,125 @@
+# --- K-2:4 QMIX Configuration for SMACv2 ---
+# This config implements the K-2:4 algorithm for StarCraft II Multi-Agent Challenge
+# Uses unit-type-based heterogeneity (n_unit_types) for diverse strategies
+
+# --- Epsilon greedy action selector ---
+action_selector: "epsilon_greedy"
+epsilon_start: 1.0
+epsilon_finish: 0.05
+epsilon_anneal_time: 100000 # 500000 for 6h_vs_8z
+
+runner: "parallel"
+batch_size_run: 4 # batch_size_run=4, buffer_size = 2500, batch_size=64  for 3s5z_vs_3s6z
+buffer_size: 5000
+batch_size: 128
+optimizer: 'adam'
+
+t_max: 10050000
+
+# update the target network every {} episodes
+target_update_interval: 200
+
+# use the Q_Learner to train
+n_unit_types: 3
+mac: "Kalei_type_n_mac"
+agent: "K24_type_n_rnn_1R3"
+agent_output_type: q
+
+learner: "k24_nq_learner"
+mixer: "qmix"
+mixing_embed_dim: 32
+hypernet_embed: 64
+lr: 0.001 # Learning rate for agents
+td_lambda: 0.6 # 0.3 for 6h_vs_8z
+optimizer: 'adam'
+q_lambda: False
+
+name: "K24_qmix_rnn_1R3"
+
+# --- K-2:4 Algorithm Parameters for SMACv2 ---
+K24_args:
+  # ========== Temperature Annealing ==========
+  # SMACv2 environments are more complex than MPE
+  # Require slower annealing schedules for stable training
+
+  temperature_init: 5.0           # Initial temperature
+  temperature_min: 0.2            # Minimum temperature
+  anneal_start: 0.0               # Start annealing at training start
+  anneal_end: 0.4                 # Complete annealing at 80% progress
+  anneal_end_step: 4020000        # End step (0.8 * t_max for 10.05M timesteps)
+
+  # ========== EMA Activation Tracking ==========
+  # SMACv2 has dynamic state distributions due to combat
+  # Use moderate momentum for stable tracking
+
+  ema_momentum: 0.90              # EMA coefficient for activation tracking
+
+  # ========== Heterogeneity Coefficients ==========
+  # Per-unit-type coefficients for specialized strategies
+
+  hetero_init_scale: 0.01         # Initial scale for unit type heterogeneity
+
+  # ========== Pattern Orthogonality Loss ==========
+  # Encourage different unit types to use different network structures
+
+  div_coef: 0.1                   # Base diversity coefficient
+  deque_len: 100                  # Loss history buffer for adaptive coefficient
+
+  # ========== Adaptive Resetting ==========
+  # Reset to handle strategy evolution during training
+
+  reset_interval: 1_000_000          # Reset interval (timesteps) - SMACv2 needs longer
+  reset_ratio: 0.2                # Reset 20% of coefficients (higher for exploration)
+
+  # ========== Rewind & Finetune (Lottery Ticket Hypothesis) ==========
+  # Freeze masks in the final training phase and fine-tune remaining weights
+  # This typically provides 2-5% performance improvement
+
+  finetune_start_ratio: 0.4       # Start finetuning at 40% of training (last 20%)
+  finetune_lr_decay: 0.9         # Reduce LR to 90% during finetuning
+
+# ========== SMACv2-Specific Tuning Notes ==========
+#
+# SMACv2 Environment Characteristics:
+#   - Real-time strategy game scenarios
+#   - Complex state and action spaces
+#   - Highly dynamic combat situations
+#   - Different unit types with unique capabilities
+#   - Larger observation spaces than MPE
+#
+# Recommended Adjustments per Scenario Type:
+#
+# 1. Micromanagement Scenarios (3s5z, 3s6z, etc.):
+#    - Standard div_coef (0.1-0.15): Moderate heterogeneity
+#    - Standard annealing (0.8 end): Default behavior
+#    - Larger reset_interval (500000-1000000): Stable training
+#    - finetune_start_ratio: 0.75-0.8 (earlier finetune)
+#
+# 2. Large-scale Battles (corridor, 6h_vs_8z):
+#    - Higher div_coef (0.15-0.2): More heterogeneity for complex strategies
+#    - Slower annealing (0.85-0.9 end): More exploration time
+#    - Larger reset_interval (1000000): More stable training
+#    - finetune_start_ratio: 0.85 (later finetune)
+#
+# 3. Mixed Unit Types (MMM, MMM2):
+#    - Higher div_coef (0.15-0.25): More heterogeneity for different units
+#    - Standard annealing (0.8 end): Default behavior
+#    - Standard reset_interval (500000): Default behavior
+#    - n_unit_types may need adjustment based on scenario
+#
+# Unit Type Considerations:
+#   - Few types (2-3): Lower div_coef (0.05-0.1) sufficient
+#   - Medium types (4-6): Standard div_coef (0.1-0.15)
+#   - Many types (7+): Higher div_coef (0.15-0.25) for more diversity
+#
+# Training Timeline:
+#   0% ──────────────────────────────────────────────────────────────────── 100%
+#       |                          |                    |
+#       Training start             Annealing end        Finetune start
+#       (mask exploration)         (stable masks)       (freeze & fine-tune)
+#
+#       anneal_end: 0.8            finetune_start_ratio: 0.8
+#       anneal_end_step: 8.04M     finetune_start_step: 8.04M
+#
+# Phase 1 (0-80%): Mask exploration with temperature annealing
+# Phase 2 (80-100%): Fixed masks with LR decay for fine-tuning

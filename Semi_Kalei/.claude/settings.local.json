@@ -4,7 +4,8 @@
       "Bash(mkdir:*)",
       "Bash(tree:*)",
       "Bash(python3:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(find:*)"
     ]
   }
 }
