@@ -9,10 +9,12 @@ from .lica_controller import LICAMAC
 from .dop_controller import DOPMAC
 from .Kalei_type_n_controller import Kalei_type_NMAC
 from .nops_controller import NoPSMAC
+from .SNP_type_n_controller import SNP_type_NMAC
 
 REGISTRY["basic_mac"] = BasicMAC
 REGISTRY["n_mac"] = NMAC
 REGISTRY["Kalei_type_n_mac"] = Kalei_type_NMAC
+REGISTRY["SNP_type_n_mac"] = SNP_type_NMAC
 REGISTRY["ppo_mac"] = PPOMAC
 REGISTRY["conv_mac"] = ConvMAC
 REGISTRY["basic_central_mac"] = CentralBasicMAC
