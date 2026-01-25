@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the implementation of the **SNP (Structured Network Pruning for Parameter Sharing)** algorithm for the MPE (Multi-Agent Particle Environment) project, based on the Kaleidoscope codebase. SNP-PS is a parameter sharing method for multi-agent reinforcement learning that uses structured network pruning to create diverse subnetworks for different agents within a shared root network.
+This document describes the implementation of the **SNP (Structured Network Pruning for Parameter Sharing)** algorithm for the MPE (Multi-Agent Particle Environment) project in the epymarl_kaleidoscope codebase. SNP-PS is a parameter sharing method for multi-agent reinforcement learning that uses structured network pruning to create diverse subnetworks for different agents within a shared root network.
 
 ## Theoretical Background
 
@@ -18,7 +18,7 @@ SNP uses **structured network pruning** to create binary masks for each agent:
 
 1. **Initialization**: A single dense neural network (root network) is initialized
 2. **Mask Generation**: Random binary masks are generated for each agent using structured pruning
-3. **Subnetwork Construction**: Each agent uses `f(x; theta element-wise_multiply M_i)` where `M_i` is agent i's mask
+3. **Subnetwork Construction**: Each agent uses `f(x; θ ⊙ M_i)` where `M_i` is agent i's mask
 4. **Parameter Sharing**:
    - **Overlapping regions**: Multiple agents share the same parameters (high sample efficiency)
    - **Non-overlapping regions**: Agent-specific parameters (high representational capacity)
@@ -30,7 +30,7 @@ Compared to baseline methods:
 - **vs. Full Parameter Sharing**: SNP provides agent identifiability, allowing agents to learn different behaviors
 - **vs. One-Hot + Parameter Sharing**: SNP doesn't require additional input dimensions
 - **vs. SePS (Selective Parameter Sharing)**: SNP doesn't need extra clustering networks or parameters
-- **Controllable**: The pruning ratio directly controls the degree of parameter sharing
+- **vs. Kaleidoscope**: SNP uses fixed random masks instead of learnable thresholds, resulting in simpler implementation with no additional training objectives
 
 ## Implementation Details
 
@@ -42,36 +42,26 @@ Compared to baseline methods:
    - Mask generation using random sampling with specified sparsity ratios
 
 2. **`src/modules/agents/__init__.py`** (MODIFIED)
-   - Registered `SNP_RNNAgent_1R3` as `"SNP_rnn_1R3"`
+   - Registered `SNP_RNNAgent_1R3` as `"snp_rnn_1R3"`
 
-3. **`src/controllers/SNP_controller.py`** (NEW)
+3. **`src/controllers/snp_controller.py`** (NEW)
    - `SNP_MAC`: Multi-agent controller for SNP in MPE
    - Handles agent identification and mask selection
 
 4. **`src/controllers/__init__.py`** (MODIFIED)
-   - Registered `SNP_MAC` as `"SNP_mac"`
+   - Registered `SNP_MAC` as `"snp_mac"`
 
 5. **`src/config/algs/SNP_qmix_rnn_1R3.yaml`** (NEW)
    - Configuration file for SNP-QMIX algorithm
    - Sparsity ratio settings for different layers
 
-### Key Differences from SMACv2 Implementation
-
-| Aspect | SMACv2 Implementation | MPE Implementation |
-|--------|----------------------|--------------------|
-| **Agent Count** | `n_unit_types` | `n_agents` |
-| **Agent IDs** | Extracted from observation (unit types) | Direct (0 to n_agents-1) |
-| **Controller** | `SNP_type_NMAC` (extends `NMAC`) | `SNP_MAC` (extends `BasicMAC`) |
-| **ID Extraction** | One-hot encoding from obs | `torch.arange` for simple IDs |
-| **Environment** | SMAC (StarCraft II) | MPE (Particle World) |
-
 ### Agent Architecture
 
-The SNP agent uses a 4-layer architecture:
+The SNP agent uses a 4-layer architecture (1R3):
 
 ```
 Input -> fc1 -> RNN (GRU) -> fc2 -> fc3 -> fc4 -> Q-values
-         (no mask)         (mask_0) (mask_1) (mask_2)
+         (no mask)               (mask_0) (mask_1) (mask_2)
 ```
 
 - **fc1**: Standard linear layer (no pruning)
@@ -107,11 +97,19 @@ This is different from Kaleidoscope's approach:
 
 #### 3. `get_sparsities()`
 - Calculates actual sparsity ratios for each layer
-- Returns overlap statistics (how many agents share each neuron)
+- Returns the sparsity statistics and mask counts
 
 #### 4. `get_mask_diversity()`
 - Measures pairwise differences between agent masks
+- Higher diversity means more agent specialization
 - Useful for analyzing mask diversity and overlap
+
+#### 5. `get_overlap_statistics()`
+- Analyzes parameter sharing patterns across agents
+- Returns overlap matrix showing fraction of shared neurons between agent pairs
+
+#### 6. `get_active_neuron_counts()`
+- Returns the number of active (non-pruned) neurons for each agent in each layer
 
 ## Configuration
 
@@ -148,22 +146,28 @@ SNP_args:
 ### Basic Training Command
 
 ```bash
-cd /mnt/lc_gpu_test/Semi_Kaleidoscope/Kalei_epymarl/baseline/Kaleidoscope/Kalei_MPE
+cd /mnt/lc_gpu_test/Semi_Kaleidoscope/Kalei_epymarl/baseline/epymarl_kaleidoscope
 
-python src/run.py --config=SNP_qmix_rnn_1R3 --env-config=gymma env_args.env_name=MPE.envs.simple_spread_v3
+python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma env_args.env_name=MPE.envs.simple_spread_v3
 ```
 
 ### Running on Different MPE Environments
 
 ```bash
 # Example: Run on simple_push scenario
-python src/run.py --config=SNP_qmix_rnn_1R3 --env-config=gymma env_args.env_name=MPE.envs.simple_push_v3
+python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma env_args.env_name=MPE.envs.simple_push_v3
 
 # Example: Run on simple_adversary scenario
-python src/run.py --config=SNP_qmix_rnn_1R3 --env-config=gymma env_args.env_name=MPE.envs.simple_adversary_v3
+python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma env_args.env_name=MPE.envs.simple_adversary_v3
 
 # Example: Run on simple_tag scenario
-python src/run.py --config=SNP_qmix_rnn_1R3 --env-config=gymma env_args.env_name=MPE.envs.simple_tag_v3
+python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma env_args.env_name=MPE.envs.simple_tag_v3
+
+# Example: Run on simple_reference scenario
+python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma env_args.env_name=MPE.envs.simple_reference_v3
+
+# Example: Run on simple_crypto scenario
+python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma env_args.env_name=MPE.envs.simple_crypto_v3
 ```
 
 ### Custom Sparsity Configuration
@@ -187,14 +191,30 @@ Key hyperparameters to tune:
    - Adjust based on task complexity
 
 2. **Learning rate** (`lr`): Standard QMIX parameter
-   - Default: 0.0005 (usually set in default.yaml)
+   - Default: 0.0005
    - Reduce if training is unstable
 
 3. **Epsilon annealing** (`epsilon_anneal_time`):
    - Default: 50000
    - Increase for more exploration
 
-## Implementation Details
+4. **TD lambda** (`td_lambda`):
+   - Default: 0.6
+   - Controls temporal credit assignment
+
+## Comparison with Other Methods
+
+| Aspect | Full PS | Kaleidoscope | SNP |
+|--------|---------|--------------|-----|
+| **Mask Generation** | N/A | Learned thresholds | Fixed random masks |
+| **Mask Update** | N/A | Reset periodically | Static (never changed) |
+| **Training Objective** | Standard RL | Diversity loss + RL | Standard RL only |
+| **Sparsity Control** | N/A | Threshold parameters | Direct sparsity ratio |
+| **Additional Parameters** | 0 | Threshold parameters | 0 |
+| **Complexity** | Low | Higher | Low |
+| **Agent Identifiability** | No | Yes | Yes |
+
+## Code Structure
 
 ### SNP_MAC Controller
 
@@ -217,29 +237,6 @@ The `SNP_MAC` controller extends `BasicMAC` with these modifications:
 | **Mask Learning** | Learnable thresholds | Fixed random masks |
 | **Base Class** | BasicMAC | BasicMAC |
 | **Properties** | `sparsities`, `mask_parameters` | None (no learnable masks) |
-
-## Code Reference
-
-### SNP Agent Implementation
-
-```python
-class SNP_RNNAgent_1R3(nn.Module):
-    def __init__(self, input_shape, args):
-        # ... initialize layers ...
-
-        # Generate masks for 3 layers (fc2, fc3, fc4)
-        for i, layer_sparsity in enumerate(self.sparsity_ratios):
-            self.register_buffer(
-                f"mask_{i}",
-                th.rand(self.n_agents, hidden_dim) > layer_sparsity
-            )
-
-    def forward(self, inputs, hidden_state, agent_ids):
-        # ... standard layers ...
-        h = h * self.mask_0[agent_ids]
-        q = self.fc2(h) * self.mask_1[agent_ids]
-        # ... etc
-```
 
 ## Troubleshooting
 
@@ -265,32 +262,69 @@ class SNP_RNNAgent_1R3(nn.Module):
 2. **Increase sparsity** if agents need more distinct behaviors
 3. **Decrease sparsity** if sample efficiency is critical
 4. **Monitor mask diversity** using `get_mask_diversity()` method
+5. **Check overlap statistics** using `get_overlap_statistics()` to understand parameter sharing patterns
 
-## Implementation Differences from Other Methods
+## Implementation Reference
 
-| Aspect | Full PS | Kaleidoscope | SNP |
-|--------|---------|--------------|-----|
-| **Mask Generation** | N/A | Learned thresholds | Fixed random masks |
-| **Mask Update** | N/A | Reset periodically | Static (never changed) |
-| **Training Objective** | Standard RL | Diversity loss + RL | Standard RL only |
-| **Sparsity Control** | N/A | Threshold parameters | Direct sparsity ratio |
-| **Additional Parameters** | 0 | Threshold parameters | 0 |
-| **Complexity** | Low | Higher | Low |
+### SNP Agent Implementation
+
+```python
+class SNP_RNNAgent_1R3(nn.Module):
+    def __init__(self, input_shape, args):
+        # ... initialize layers ...
+
+        # Generate masks for 3 layers (fc2, fc3, fc4)
+        for i, layer_sparsity in enumerate(self.sparsity_ratios):
+            self.register_buffer(
+                f"mask_{i}",
+                th.rand(self.n_agents, hidden_dim) > layer_sparsity
+            )
+
+    def forward(self, inputs, hidden_state, agent_ids):
+        # ... standard layers ...
+        h = h * self.mask_0[agent_ids]  # Apply mask to RNN output
+        q = self.fc2(h) * self.mask_1[agent_ids]  # Apply mask to fc2
+        # ... etc
+```
+
+## Example Output Analysis
+
+### Mask Statistics
+
+You can analyze the learned masks using the helper methods:
+
+```python
+# Get sparsity statistics
+sparsities, counts = agent.get_sparsities()
+print(f"Layer sparsities: {sparsities}")
+
+# Get mask diversity
+diversity = agent.get_mask_diversity()
+print(f"Mask diversity: {diversity}")
+
+# Get overlap statistics
+overlap_matrix, layer_overlaps = agent.get_overlap_statistics()
+print(f"Overlap matrix:\n{overlap_matrix}")
+
+# Get active neuron counts
+active_counts = agent.get_active_neuron_counts()
+print(f"Active neurons per agent: {active_counts}")
+```
 
 ## References
 
 - **SNP Paper**: Structured Network Pruning for Parameter Sharing in Multi-Agent Reinforcement Learning
 - **Kaleidoscope Paper**: Sparse Neural Networks for Multi-Agent Reinforcement Learning
-- **SMACv2 Implementation**: `Kalei_SMACv2/SNP_Implementation.md`
+- **epymarl**: PyMARL: A Multi-Agent Reinforcement Learning Framework
 
 ## Summary
 
 The SNP implementation for MPE provides:
-- Simpler agent identification (direct IDs vs unit types)
-- Fixed random masks for parameter sharing
-- Controllable sparsity via configuration
-- No additional learnable parameters
-- Compatible with MPE environments (simple_spread, simple_push, simple_tag, etc.)
-- Easy integration with existing QMIX framework
+- ✅ Simple, fixed random masks for parameter sharing
+- ✅ Controllable sparsity via configuration
+- ✅ No additional learnable parameters
+- ✅ Compatible with MPE environments (simple_spread, simple_push, simple_tag, etc.)
+- ✅ Easy integration with existing QMIX framework
+- ✅ Helper methods for analyzing mask statistics and diversity
 
-The implementation follows the specifications from the SNP paper and adapts the SMACv2 implementation for the MPE environment structure.
+The implementation follows the specifications from the SNP paper and adapts the SMACv2 implementation for the MPE environment structure in the epymarl_kaleidoscope codebase.
