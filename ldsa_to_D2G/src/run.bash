@@ -1,0 +1,1 @@
+python main.py --env-config=sc2 --config=ldsa

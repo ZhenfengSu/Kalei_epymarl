@@ -1,0 +1,859 @@
+[INFO 16:45:39] pymarl Running command 'my_main'
+[INFO 16:45:39] pymarl Started run with ID "1"
+[DEBUG 16:45:39] pymarl Starting Heartbeat
+[DEBUG 16:45:39] my_main Started
+[INFO 16:45:39] my_main Experiment Parameters:
+[INFO 16:45:39] my_main 
+
+{   'K24_args': {   'anneal_end': 0.8,
+                    'anneal_end_step': 2400000,
+                    'anneal_start': 0.0,
+                    'deque_len': 100,
+                    'div_coef': 0.1,
+                    'ema_momentum': 0.9,
+                    'finetune_lr_decay': 0.9,
+                    'finetune_start_ratio': 0.7,
+                    'hetero_init_scale': 0.01,
+                    'kl_threshold': 0.1,
+                    'reset_interval': 10000,
+                    'reset_ratio': 0.1,
+                    'temperature_init': 5.0,
+                    'temperature_min': 0.2,
+                    'use_adaptive_reset': False},
+    'action_selector': 'epsilon_greedy',
+    'add_value_last_step': True,
+    'agent': 'k24_rnn_1R3',
+    'agent_output_type': 'q',
+    'batch_size': 64,
+    'batch_size_run': 1,
+    'buffer_cpu_only': True,
+    'buffer_size': 5000,
+    'checkpoint_path': '',
+    'common_reward': True,
+    'double_q': True,
+    'env': 'gymma',
+    'env_args': {   'key': 'pz-mpe-simple-push-v3',
+                    'pretrained_wrapper': None,
+                    'seed': 157948965,
+                    'time_limit': 25},
+    'epsilon_anneal_time': 50000,
+    'epsilon_finish': 0.05,
+    'epsilon_start': 1.0,
+    'evaluate': False,
+    'evaluation_epsilon': 0.0,
+    'gamma': 0.99,
+    'grad_norm_clip': 10,
+    'hidden_dim': 64,
+    'hypergroup': None,
+    'hypernet_embed': 64,
+    'hypernet_layers': 2,
+    'label': 'default_label',
+    'learner': 'k24_q_learner',
+    'learner_log_interval': 10000,
+    'load_step': 0,
+    'local_results_path': 'results',
+    'log_interval': 50000,
+    'lr': 0.0005,
+    'mac': 'kalei_mac',
+    'mixer': 'qmix',
+    'mixing_embed_dim': 32,
+    'name': 'K24_nq',
+    'obs_agent_id': True,
+    'obs_last_action': False,
+    'optim_alpha': 0.99,
+    'optim_eps': 1e-05,
+    'optimizer': 'adam',
+    'q_lambda': False,
+    'render': False,
+    'repeat_id': 1,
+    'reward_scalarisation': 'sum',
+    'runner': 'episode',
+    'runner_log_interval': 10000,
+    'save_model': False,
+    'save_model_interval': 50000,
+    'save_replay': False,
+    'seed': 157948965,
+    'standardise_returns': False,
+    'standardise_rewards': True,
+    't_max': 3050000,
+    'target_update_interval': 200,
+    'target_update_interval_or_tau': 200,
+    'td_lambda': 0.6,
+    'test_greedy': True,
+    'test_interval': 50000,
+    'test_nepisode': 100,
+    'use_cuda': True,
+    'use_rnn': True,
+    'use_tensorboard': False,
+    'use_wandb': False,
+    'wandb_mode': 'offline',
+    'wandb_project': None,
+    'wandb_save_model': False,
+    'wandb_team': None}
+
+/root/anaconda3/envs/mpe/lib/python3.11/site-packages/pettingzoo/utils/conversions.py:158: UserWarning: The `action_spaces` dictionary is deprecated. Use the `action_space` function instead.
+  warnings.warn(
+/root/anaconda3/envs/mpe/lib/python3.11/site-packages/pettingzoo/utils/conversions.py:144: UserWarning: The `observation_spaces` dictionary is deprecated. Use the `observation_space` function instead.
+  warnings.warn(
+[INFO 16:45:39] my_main Beginning training for 3050000 timesteps
+/root/anaconda3/envs/mpe/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:245: UserWarning: [33mWARN: The reward returned by `step()` must be a float, int, np.integer or np.floating, actual type: <class 'list'>[0m
+  logger.warn(
+[INFO 16:45:39] my_main t_env: 25 / 3050000
+[INFO 16:45:39] my_main Estimated time left: 22 seconds. Time passed: 0 seconds
+[INFO 16:53:21] my_main Recent Stats | t_env:      50000 | Episode:     2000
+div_coef:                  0.3738	div_loss:                  0.1688	ep_length_mean:           25.0000	epsilon:                   0.2400
+finetune_mode:             0.0000	grad_norm:                 7.8208	loss:                      1.1227	loss_td:                   1.1227
+overall_sparsity:          0.1402	pattern_0_prob:            0.1665	pattern_1_prob:            0.1688	pattern_2_prob:            0.1657
+pattern_3_prob:            0.1675	pattern_4_prob:            0.1644	pattern_5_prob:            0.1671	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1735	pattern_mean_similarity:   0.1686	progress:                  0.0090	q_taken_mean:              0.1785
+return_mean:             -23.8338	return_std:                8.7794	sparsity_layer_0:          0.4847	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               0.2517	td_error_abs:              0.8273
+temperature:               4.9460	test_ep_length_mean:      25.0000	test_return_mean:        -53.1099	test_return_std:          16.4478
+
+[INFO 16:53:21] my_main t_env: 50025 / 3050000
+[INFO 16:53:21] my_main Estimated time left: 7 hours, 41 minutes, 41 seconds. Time passed: 7 minutes, 42 seconds
+[INFO 17:01:12] my_main Recent Stats | t_env:     100000 | Episode:     4000
+div_coef:                  0.7521	div_loss:                  0.1684	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                25.4416	loss:                      1.7400	loss_td:                   1.7400
+overall_sparsity:          0.1401	pattern_0_prob:            0.1687	pattern_1_prob:            0.1697	pattern_2_prob:            0.1662
+pattern_3_prob:            0.1670	pattern_4_prob:            0.1638	pattern_5_prob:            0.1646	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1738	pattern_mean_similarity:   0.1683	progress:                  0.0298	q_taken_mean:              3.0182
+return_mean:             -15.4599	return_std:                5.8493	sparsity_layer_0:          0.4839	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.2306	td_error_abs:              1.0261
+temperature:               4.8210	test_ep_length_mean:      25.0000	test_return_mean:        -34.4545	test_return_std:          11.5800
+
+[INFO 17:01:12] my_main t_env: 100025 / 3050000
+[INFO 17:01:12] my_main Estimated time left: 7 hours, 43 minutes, 27 seconds. Time passed: 15 minutes, 33 seconds
+[INFO 17:09:02] my_main Recent Stats | t_env:     150000 | Episode:     6000
+div_coef:                  0.5689	div_loss:                  0.1684	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                16.3674	loss:                      1.1122	loss_td:                   1.1122
+overall_sparsity:          0.1401	pattern_0_prob:            0.1699	pattern_1_prob:            0.1690	pattern_2_prob:            0.1672
+pattern_3_prob:            0.1659	pattern_4_prob:            0.1645	pattern_5_prob:            0.1635	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1742	pattern_mean_similarity:   0.1685	progress:                  0.0507	q_taken_mean:              4.4575
+return_mean:             -15.6815	return_std:                5.9166	sparsity_layer_0:          0.4824	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.4447	td_error_abs:              0.8397
+temperature:               4.6960	test_ep_length_mean:      25.0000	test_return_mean:        -28.4123	test_return_std:           9.8507
+
+[INFO 17:09:02] my_main t_env: 150025 / 3050000
+[INFO 17:09:02] my_main Estimated time left: 7 hours, 34 minutes, 16 seconds. Time passed: 23 minutes, 23 seconds
+[INFO 17:16:52] my_main Recent Stats | t_env:     200000 | Episode:     8000
+div_coef:                  0.3459	div_loss:                  0.1683	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                17.1407	loss:                      0.6469	loss_td:                   0.6469
+overall_sparsity:          0.1402	pattern_0_prob:            0.1693	pattern_1_prob:            0.1681	pattern_2_prob:            0.1667
+pattern_3_prob:            0.1663	pattern_4_prob:            0.1655	pattern_5_prob:            0.1641	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1746	pattern_mean_similarity:   0.1686	progress:                  0.0715	q_taken_mean:              4.4150
+return_mean:             -15.8467	return_std:                6.1012	sparsity_layer_0:          0.4844	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.2998	td_error_abs:              0.6162
+temperature:               4.5710	test_ep_length_mean:      25.0000	test_return_mean:        -25.0684	test_return_std:           8.7656
+
+[INFO 17:16:52] my_main t_env: 200025 / 3050000
+[INFO 17:16:52] my_main Estimated time left: 7 hours, 26 minutes, 9 seconds. Time passed: 31 minutes, 12 seconds
+[INFO 17:24:41] my_main Recent Stats | t_env:     250000 | Episode:    10000
+div_coef:                  0.2543	div_loss:                  0.1682	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 9.0587	loss:                      0.4364	loss_td:                   0.4364
+overall_sparsity:          0.1401	pattern_0_prob:            0.1699	pattern_1_prob:            0.1679	pattern_2_prob:            0.1665
+pattern_3_prob:            0.1665	pattern_4_prob:            0.1657	pattern_5_prob:            0.1635	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1751	pattern_mean_similarity:   0.1684	progress:                  0.0923	q_taken_mean:              3.3940
+return_mean:             -15.7313	return_std:                6.0263	sparsity_layer_0:          0.4821	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.3302	td_error_abs:              0.5028
+temperature:               4.4460	test_ep_length_mean:      25.0000	test_return_mean:        -23.2452	test_return_std:           8.1851
+
+[INFO 17:24:41] my_main t_env: 250025 / 3050000
+[INFO 17:24:41] my_main Estimated time left: 7 hours, 17 minutes, 45 seconds. Time passed: 39 minutes, 1 seconds
+[INFO 17:32:33] my_main Recent Stats | t_env:     300000 | Episode:    12000
+div_coef:                  0.2527	div_loss:                  0.1681	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 4.6508	loss:                      0.4097	loss_td:                   0.4097
+overall_sparsity:          0.1401	pattern_0_prob:            0.1696	pattern_1_prob:            0.1677	pattern_2_prob:            0.1665
+pattern_3_prob:            0.1666	pattern_4_prob:            0.1658	pattern_5_prob:            0.1638	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1756	pattern_mean_similarity:   0.1683	progress:                  0.1132	q_taken_mean:              3.1790
+return_mean:             -15.2225	return_std:                5.8111	sparsity_layer_0:          0.4825	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.1512	td_error_abs:              0.4937
+temperature:               4.3210	test_ep_length_mean:      25.0000	test_return_mean:        -15.6591	test_return_std:           6.0764
+
+[INFO 17:32:33] my_main t_env: 300025 / 3050000
+[INFO 17:32:33] my_main Estimated time left: 7 hours, 13 minutes, 6 seconds. Time passed: 46 minutes, 54 seconds
+[INFO 17:40:25] my_main Recent Stats | t_env:     350000 | Episode:    14000
+div_coef:                  0.2267	div_loss:                  0.1680	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 3.2401	loss:                      0.3690	loss_td:                   0.3690
+overall_sparsity:          0.1402	pattern_0_prob:            0.1697	pattern_1_prob:            0.1680	pattern_2_prob:            0.1666
+pattern_3_prob:            0.1665	pattern_4_prob:            0.1656	pattern_5_prob:            0.1635	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1761	pattern_mean_similarity:   0.1683	progress:                  0.1340	q_taken_mean:              2.9397
+return_mean:             -15.0199	return_std:                6.0367	sparsity_layer_0:          0.4850	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               2.9383	td_error_abs:              0.4627
+temperature:               4.1960	test_ep_length_mean:      25.0000	test_return_mean:        -15.5518	test_return_std:           5.9152
+
+[INFO 17:40:26] my_main t_env: 350025 / 3050000
+[INFO 17:40:26] my_main Estimated time left: 7 hours, 4 minutes, 56 seconds. Time passed: 54 minutes, 46 seconds
+[INFO 17:48:20] my_main Recent Stats | t_env:     400000 | Episode:    16000
+div_coef:                  0.2154	div_loss:                  0.1681	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 4.6326	loss:                      0.3522	loss_td:                   0.3522
+overall_sparsity:          0.1402	pattern_0_prob:            0.1695	pattern_1_prob:            0.1681	pattern_2_prob:            0.1665
+pattern_3_prob:            0.1667	pattern_4_prob:            0.1654	pattern_5_prob:            0.1637	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1767	pattern_mean_similarity:   0.1684	progress:                  0.1548	q_taken_mean:              3.1878
+return_mean:             -14.2088	return_std:                5.6163	sparsity_layer_0:          0.4849	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.2101	td_error_abs:              0.4493
+temperature:               4.0710	test_ep_length_mean:      25.0000	test_return_mean:        -15.1615	test_return_std:           5.6989
+
+[INFO 17:48:20] my_main t_env: 400025 / 3050000
+[INFO 17:48:20] my_main Estimated time left: 6 hours, 59 minutes, 12 seconds. Time passed: 1 hours, 2 minutes, 41 seconds
+[INFO 17:56:14] my_main Recent Stats | t_env:     450000 | Episode:    18000
+div_coef:                  0.2184	div_loss:                  0.1681	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 3.8918	loss:                      0.3779	loss_td:                   0.3779
+overall_sparsity:          0.1402	pattern_0_prob:            0.1693	pattern_1_prob:            0.1685	pattern_2_prob:            0.1656
+pattern_3_prob:            0.1677	pattern_4_prob:            0.1650	pattern_5_prob:            0.1639	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1773	pattern_mean_similarity:   0.1683	progress:                  0.1757	q_taken_mean:              3.4116
+return_mean:             -13.7547	return_std:                5.6007	sparsity_layer_0:          0.4850	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.4225	td_error_abs:              0.4629
+temperature:               3.9460	test_ep_length_mean:      25.0000	test_return_mean:        -14.7026	test_return_std:           5.6305
+
+[INFO 17:56:15] my_main t_env: 450025 / 3050000
+[INFO 17:56:15] my_main Estimated time left: 6 hours, 51 minutes, 12 seconds. Time passed: 1 hours, 10 minutes, 35 seconds
+[INFO 18:04:09] my_main Recent Stats | t_env:     500000 | Episode:    20000
+div_coef:                  0.1997	div_loss:                  0.1681	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 3.7798	loss:                      0.3405	loss_td:                   0.3405
+overall_sparsity:          0.1401	pattern_0_prob:            0.1698	pattern_1_prob:            0.1691	pattern_2_prob:            0.1659
+pattern_3_prob:            0.1675	pattern_4_prob:            0.1643	pattern_5_prob:            0.1634	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1780	pattern_mean_similarity:   0.1684	progress:                  0.1965	q_taken_mean:              3.6756
+return_mean:             -12.8727	return_std:                5.5448	sparsity_layer_0:          0.4833	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.6880	td_error_abs:              0.4404
+temperature:               3.8210	test_ep_length_mean:      25.0000	test_return_mean:        -14.0198	test_return_std:           5.6415
+
+[INFO 18:04:09] my_main t_env: 500025 / 3050000
+[INFO 18:04:09] my_main Estimated time left: 6 hours, 43 minutes, 32 seconds. Time passed: 1 hours, 18 minutes, 30 seconds
+[INFO 18:12:02] my_main Recent Stats | t_env:     550000 | Episode:    22000
+div_coef:                  0.1943	div_loss:                  0.1681	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 4.8097	loss:                      0.2993	loss_td:                   0.2993
+overall_sparsity:          0.1402	pattern_0_prob:            0.1695	pattern_1_prob:            0.1696	pattern_2_prob:            0.1657
+pattern_3_prob:            0.1675	pattern_4_prob:            0.1639	pattern_5_prob:            0.1637	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1789	pattern_mean_similarity:   0.1684	progress:                  0.2173	q_taken_mean:              4.2595
+return_mean:             -12.5068	return_std:                5.5420	sparsity_layer_0:          0.4850	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.2866	td_error_abs:              0.4223
+temperature:               3.6960	test_ep_length_mean:      25.0000	test_return_mean:        -13.4415	test_return_std:           5.4726
+
+[INFO 18:12:02] my_main t_env: 550025 / 3050000
+[INFO 18:12:02] my_main Estimated time left: 6 hours, 33 minutes, 41 seconds. Time passed: 1 hours, 26 minutes, 22 seconds
+[INFO 18:19:54] my_main Recent Stats | t_env:     600000 | Episode:    24000
+div_coef:                  0.2036	div_loss:                  0.1681	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 4.9445	loss:                      0.3676	loss_td:                   0.3676
+overall_sparsity:          0.1402	pattern_0_prob:            0.1692	pattern_1_prob:            0.1702	pattern_2_prob:            0.1655
+pattern_3_prob:            0.1676	pattern_4_prob:            0.1635	pattern_5_prob:            0.1640	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1798	pattern_mean_similarity:   0.1684	progress:                  0.2382	q_taken_mean:              4.5100
+return_mean:             -11.3342	return_std:                5.2505	sparsity_layer_0:          0.4846	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.5293	td_error_abs:              0.4563
+temperature:               3.5710	test_ep_length_mean:      25.0000	test_return_mean:        -12.8624	test_return_std:           5.3424
+
+[INFO 18:19:54] my_main t_env: 600025 / 3050000
+[INFO 18:19:54] my_main Estimated time left: 6 hours, 25 minutes, 33 seconds. Time passed: 1 hours, 34 minutes, 15 seconds
+[INFO 18:27:48] my_main Recent Stats | t_env:     650000 | Episode:    26000
+div_coef:                  0.1951	div_loss:                  0.1682	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 3.6255	loss:                      0.2957	loss_td:                   0.2957
+overall_sparsity:          0.1402	pattern_0_prob:            0.1687	pattern_1_prob:            0.1700	pattern_2_prob:            0.1655
+pattern_3_prob:            0.1675	pattern_4_prob:            0.1638	pattern_5_prob:            0.1645	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1808	pattern_mean_similarity:   0.1684	progress:                  0.2590	q_taken_mean:              4.9443
+return_mean:             -10.9092	return_std:                5.0827	sparsity_layer_0:          0.4855	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.9469	td_error_abs:              0.4022
+temperature:               3.4460	test_ep_length_mean:      25.0000	test_return_mean:        -12.0651	test_return_std:           5.1571
+
+[INFO 18:27:48] my_main t_env: 650025 / 3050000
+[INFO 18:27:48] my_main Estimated time left: 6 hours, 19 minutes, 7 seconds. Time passed: 1 hours, 42 minutes, 8 seconds
+[INFO 18:35:44] my_main Recent Stats | t_env:     700000 | Episode:    28000
+div_coef:                  0.1812	div_loss:                  0.1682	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 3.6802	loss:                      0.3086	loss_td:                   0.3086
+overall_sparsity:          0.1402	pattern_0_prob:            0.1690	pattern_1_prob:            0.1696	pattern_2_prob:            0.1658
+pattern_3_prob:            0.1672	pattern_4_prob:            0.1642	pattern_5_prob:            0.1642	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1819	pattern_mean_similarity:   0.1685	progress:                  0.2798	q_taken_mean:              4.6739
+return_mean:             -10.7532	return_std:                5.1373	sparsity_layer_0:          0.4844	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.6699	td_error_abs:              0.3998
+temperature:               3.3210	test_ep_length_mean:      25.0000	test_return_mean:        -11.7815	test_return_std:           5.3041
+
+[INFO 18:35:44] my_main t_env: 700025 / 3050000
+[INFO 18:35:44] my_main Estimated time left: 6 hours, 13 minutes, 0 seconds. Time passed: 1 hours, 50 minutes, 5 seconds
+[INFO 18:43:39] my_main Recent Stats | t_env:     750000 | Episode:    30000
+div_coef:                  0.1691	div_loss:                  0.1683	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 3.3130	loss:                      0.2636	loss_td:                   0.2636
+overall_sparsity:          0.1402	pattern_0_prob:            0.1694	pattern_1_prob:            0.1698	pattern_2_prob:            0.1663
+pattern_3_prob:            0.1666	pattern_4_prob:            0.1640	pattern_5_prob:            0.1639	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1832	pattern_mean_similarity:   0.1685	progress:                  0.3007	q_taken_mean:              5.0303
+return_mean:             -10.8555	return_std:                5.2470	sparsity_layer_0:          0.4865	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               5.0266	td_error_abs:              0.3730
+temperature:               3.1960	test_ep_length_mean:      25.0000	test_return_mean:        -11.3363	test_return_std:           5.0398
+
+[INFO 18:43:39] my_main t_env: 750025 / 3050000
+[INFO 18:43:39] my_main Estimated time left: 6 hours, 4 minutes, 27 seconds. Time passed: 1 hours, 58 minutes, 0 seconds
+[INFO 18:51:32] my_main Recent Stats | t_env:     800000 | Episode:    32000
+div_coef:                  0.1655	div_loss:                  0.1684	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 3.1828	loss:                      0.2640	loss_td:                   0.2640
+overall_sparsity:          0.1402	pattern_0_prob:            0.1692	pattern_1_prob:            0.1702	pattern_2_prob:            0.1666
+pattern_3_prob:            0.1663	pattern_4_prob:            0.1636	pattern_5_prob:            0.1640	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1846	pattern_mean_similarity:   0.1686	progress:                  0.3215	q_taken_mean:              4.6075
+return_mean:             -10.5893	return_std:                5.0860	sparsity_layer_0:          0.4853	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.6014	td_error_abs:              0.3693
+temperature:               3.0710	test_ep_length_mean:      25.0000	test_return_mean:        -10.9705	test_return_std:           5.0083
+
+[INFO 18:51:32] my_main t_env: 800025 / 3050000
+[INFO 18:51:32] my_main Estimated time left: 5 hours, 54 minutes, 34 seconds. Time passed: 2 hours, 5 minutes, 53 seconds
+[INFO 18:59:24] my_main Recent Stats | t_env:     850000 | Episode:    34000
+div_coef:                  0.1576	div_loss:                  0.1684	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 3.2223	loss:                      0.2709	loss_td:                   0.2709
+overall_sparsity:          0.1401	pattern_0_prob:            0.1691	pattern_1_prob:            0.1699	pattern_2_prob:            0.1677
+pattern_3_prob:            0.1652	pattern_4_prob:            0.1639	pattern_5_prob:            0.1642	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1864	pattern_mean_similarity:   0.1686	progress:                  0.3423	q_taken_mean:              4.5498
+return_mean:             -10.6230	return_std:                5.2783	sparsity_layer_0:          0.4840	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.5390	td_error_abs:              0.3760
+temperature:               2.9460	test_ep_length_mean:      25.0000	test_return_mean:        -10.4605	test_return_std:           4.8888
+
+[INFO 18:59:24] my_main t_env: 850025 / 3050000
+[INFO 18:59:24] my_main Estimated time left: 5 hours, 45 minutes, 51 seconds. Time passed: 2 hours, 13 minutes, 44 seconds
+[INFO 19:07:17] my_main Recent Stats | t_env:     900000 | Episode:    36000
+div_coef:                  0.1487	div_loss:                  0.1685	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 3.2671	loss:                      0.2366	loss_td:                   0.2366
+overall_sparsity:          0.1402	pattern_0_prob:            0.1694	pattern_1_prob:            0.1703	pattern_2_prob:            0.1682
+pattern_3_prob:            0.1647	pattern_4_prob:            0.1635	pattern_5_prob:            0.1639	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1884	pattern_mean_similarity:   0.1687	progress:                  0.3632	q_taken_mean:              4.4642
+return_mean:             -10.2724	return_std:                5.0472	sparsity_layer_0:          0.4845	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.4718	td_error_abs:              0.3466
+temperature:               2.8210	test_ep_length_mean:      25.0000	test_return_mean:        -10.3684	test_return_std:           4.8938
+
+[INFO 19:07:17] my_main t_env: 900025 / 3050000
+[INFO 19:07:17] my_main Estimated time left: 5 hours, 39 minutes, 6 seconds. Time passed: 2 hours, 21 minutes, 38 seconds
+[INFO 19:15:11] my_main Recent Stats | t_env:     950000 | Episode:    38000
+div_coef:                  0.1394	div_loss:                  0.1687	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 3.2890	loss:                      0.2395	loss_td:                   0.2395
+overall_sparsity:          0.1402	pattern_0_prob:            0.1693	pattern_1_prob:            0.1709	pattern_2_prob:            0.1687
+pattern_3_prob:            0.1642	pattern_4_prob:            0.1630	pattern_5_prob:            0.1639	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1906	pattern_mean_similarity:   0.1689	progress:                  0.3840	q_taken_mean:              4.3051
+return_mean:             -10.2218	return_std:                5.0835	sparsity_layer_0:          0.4855	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.3145	td_error_abs:              0.3400
+temperature:               2.6960	test_ep_length_mean:      25.0000	test_return_mean:         -9.9334	test_return_std:           4.5852
+
+[INFO 19:15:12] my_main t_env: 950025 / 3050000
+[INFO 19:15:12] my_main Estimated time left: 5 hours, 32 minutes, 10 seconds. Time passed: 2 hours, 29 minutes, 32 seconds
+[INFO 19:23:05] my_main Recent Stats | t_env:    1000000 | Episode:    40000
+div_coef:                  0.1355	div_loss:                  0.1689	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 3.4645	loss:                      0.2251	loss_td:                   0.2251
+overall_sparsity:          0.1401	pattern_0_prob:            0.1700	pattern_1_prob:            0.1708	pattern_2_prob:            0.1694
+pattern_3_prob:            0.1636	pattern_4_prob:            0.1631	pattern_5_prob:            0.1631	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1930	pattern_mean_similarity:   0.1691	progress:                  0.4048	q_taken_mean:              4.3897
+return_mean:             -10.2145	return_std:                4.9679	sparsity_layer_0:          0.4841	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.4080	td_error_abs:              0.3289
+temperature:               2.5710	test_ep_length_mean:      25.0000	test_return_mean:        -10.0080	test_return_std:           4.7296
+
+[INFO 19:23:05] my_main t_env: 1000025 / 3050000
+[INFO 19:23:05] my_main Estimated time left: 5 hours, 23 minutes, 26 seconds. Time passed: 2 hours, 37 minutes, 25 seconds
+[INFO 19:30:56] my_main Recent Stats | t_env:    1050000 | Episode:    42000
+div_coef:                  0.1379	div_loss:                  0.1692	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 2.6953	loss:                      0.2163	loss_td:                   0.2163
+overall_sparsity:          0.1402	pattern_0_prob:            0.1709	pattern_1_prob:            0.1715	pattern_2_prob:            0.1700
+pattern_3_prob:            0.1631	pattern_4_prob:            0.1622	pattern_5_prob:            0.1623	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1959	pattern_mean_similarity:   0.1693	progress:                  0.4257	q_taken_mean:              4.5152
+return_mean:             -10.0297	return_std:                5.0361	sparsity_layer_0:          0.4849	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.5223	td_error_abs:              0.3200
+temperature:               2.4460	test_ep_length_mean:      25.0000	test_return_mean:         -9.7646	test_return_std:           4.5963
+
+[INFO 19:30:56] my_main t_env: 1050025 / 3050000
+[INFO 19:30:56] my_main Estimated time left: 5 hours, 14 minutes, 8 seconds. Time passed: 2 hours, 45 minutes, 17 seconds
+[INFO 19:38:50] my_main Recent Stats | t_env:    1100000 | Episode:    44000
+div_coef:                  0.1292	div_loss:                  0.1694	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 2.9714	loss:                      0.2311	loss_td:                   0.2311
+overall_sparsity:          0.1401	pattern_0_prob:            0.1705	pattern_1_prob:            0.1725	pattern_2_prob:            0.1696
+pattern_3_prob:            0.1634	pattern_4_prob:            0.1613	pattern_5_prob:            0.1626	pattern_entropy:           0.0000
+pattern_max_similarity:    0.1991	pattern_mean_similarity:   0.1695	progress:                  0.4465	q_taken_mean:              4.1982
+return_mean:              -9.7476	return_std:                5.0960	sparsity_layer_0:          0.4831	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.2011	td_error_abs:              0.3182
+temperature:               2.3210	test_ep_length_mean:      25.0000	test_return_mean:         -9.7967	test_return_std:           4.6762
+
+[INFO 19:38:50] my_main t_env: 1100025 / 3050000
+[INFO 19:38:50] my_main Estimated time left: 5 hours, 8 minutes, 12 seconds. Time passed: 2 hours, 53 minutes, 11 seconds
+[INFO 19:46:43] my_main Recent Stats | t_env:    1150000 | Episode:    46000
+div_coef:                  0.1207	div_loss:                  0.1697	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 3.1799	loss:                      0.1972	loss_td:                   0.1972
+overall_sparsity:          0.1401	pattern_0_prob:            0.1711	pattern_1_prob:            0.1731	pattern_2_prob:            0.1695
+pattern_3_prob:            0.1631	pattern_4_prob:            0.1611	pattern_5_prob:            0.1620	pattern_entropy:           0.0000
+pattern_max_similarity:    0.2032	pattern_mean_similarity:   0.1698	progress:                  0.4673	q_taken_mean:              4.0877
+return_mean:              -9.9711	return_std:                5.1187	sparsity_layer_0:          0.4839	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.0924	td_error_abs:              0.3028
+temperature:               2.1960	test_ep_length_mean:      25.0000	test_return_mean:         -9.7883	test_return_std:           4.7948
+
+[INFO 19:46:44] my_main t_env: 1150025 / 3050000
+[INFO 19:46:44] my_main Estimated time left: 4 hours, 59 minutes, 48 seconds. Time passed: 3 hours, 1 minutes, 4 seconds
+[INFO 19:54:36] my_main Recent Stats | t_env:    1200000 | Episode:    48000
+div_coef:                  0.1199	div_loss:                  0.1701	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 3.7578	loss:                      0.2057	loss_td:                   0.2057
+overall_sparsity:          0.1402	pattern_0_prob:            0.1712	pattern_1_prob:            0.1742	pattern_2_prob:            0.1697
+pattern_3_prob:            0.1628	pattern_4_prob:            0.1603	pattern_5_prob:            0.1618	pattern_entropy:           0.0000
+pattern_max_similarity:    0.2081	pattern_mean_similarity:   0.1702	progress:                  0.4882	q_taken_mean:              3.9810
+return_mean:              -9.9285	return_std:                5.0852	sparsity_layer_0:          0.4844	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.9959	td_error_abs:              0.3125
+temperature:               2.0710	test_ep_length_mean:      25.0000	test_return_mean:        -10.0468	test_return_std:           4.9980
+
+[INFO 19:54:36] my_main t_env: 1200025 / 3050000
+[INFO 19:54:36] my_main Estimated time left: 4 hours, 51 minutes, 23 seconds. Time passed: 3 hours, 8 minutes, 57 seconds
+[INFO 20:02:28] my_main Recent Stats | t_env:    1250000 | Episode:    50000
+div_coef:                  0.1230	div_loss:                  0.1705	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 3.0582	loss:                      0.2039	loss_td:                   0.2039
+overall_sparsity:          0.1401	pattern_0_prob:            0.1722	pattern_1_prob:            0.1752	pattern_2_prob:            0.1692
+pattern_3_prob:            0.1629	pattern_4_prob:            0.1596	pattern_5_prob:            0.1609	pattern_entropy:           0.0000
+pattern_max_similarity:    0.2142	pattern_mean_similarity:   0.1706	progress:                  0.5090	q_taken_mean:              4.0381
+return_mean:              -9.8860	return_std:                5.3857	sparsity_layer_0:          0.4841	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.0520	td_error_abs:              0.3049
+temperature:               1.9460	test_ep_length_mean:      25.0000	test_return_mean:         -9.8239	test_return_std:           4.9977
+
+[INFO 20:02:29] my_main t_env: 1250025 / 3050000
+[INFO 20:02:29] my_main Estimated time left: 4 hours, 43 minutes, 26 seconds. Time passed: 3 hours, 16 minutes, 49 seconds
+[INFO 20:10:22] my_main Recent Stats | t_env:    1300000 | Episode:    52000
+div_coef:                  0.1176	div_loss:                  0.1710	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 2.6797	loss:                      0.1792	loss_td:                   0.1792
+overall_sparsity:          0.1402	pattern_0_prob:            0.1723	pattern_1_prob:            0.1762	pattern_2_prob:            0.1693
+pattern_3_prob:            0.1625	pattern_4_prob:            0.1585	pattern_5_prob:            0.1611	pattern_entropy:           0.0000
+pattern_max_similarity:    0.2211	pattern_mean_similarity:   0.1712	progress:                  0.5298	q_taken_mean:              4.0518
+return_mean:              -9.9044	return_std:                5.2322	sparsity_layer_0:          0.4863	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.0628	td_error_abs:              0.2905
+temperature:               1.8210	test_ep_length_mean:      25.0000	test_return_mean:         -9.9009	test_return_std:           5.1556
+
+[INFO 20:10:22] my_main t_env: 1300025 / 3050000
+[INFO 20:10:22] my_main Estimated time left: 4 hours, 36 minutes, 18 seconds. Time passed: 3 hours, 24 minutes, 43 seconds
+[INFO 20:18:12] my_main Recent Stats | t_env:    1350000 | Episode:    54000
+div_coef:                  0.1141	div_loss:                  0.1717	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 2.3131	loss:                      0.1868	loss_td:                   0.1868
+overall_sparsity:          0.1402	pattern_0_prob:            0.1729	pattern_1_prob:            0.1761	pattern_2_prob:            0.1698
+pattern_3_prob:            0.1618	pattern_4_prob:            0.1588	pattern_5_prob:            0.1605	pattern_entropy:           0.0000
+pattern_max_similarity:    0.2302	pattern_mean_similarity:   0.1720	progress:                  0.5507	q_taken_mean:              4.0960
+return_mean:              -9.8234	return_std:                5.0450	sparsity_layer_0:          0.4856	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.1029	td_error_abs:              0.2914
+temperature:               1.6960	test_ep_length_mean:      25.0000	test_return_mean:         -9.8007	test_return_std:           5.2418
+
+[INFO 20:18:12] my_main t_env: 1350025 / 3050000
+[INFO 20:18:12] my_main Estimated time left: 4 hours, 26 minutes, 8 seconds. Time passed: 3 hours, 32 minutes, 32 seconds
+[INFO 20:26:01] my_main Recent Stats | t_env:    1400000 | Episode:    56000
+div_coef:                  0.1128	div_loss:                  0.1723	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 2.1008	loss:                      0.1796	loss_td:                   0.1796
+overall_sparsity:          0.1402	pattern_0_prob:            0.1739	pattern_1_prob:            0.1766	pattern_2_prob:            0.1704
+pattern_3_prob:            0.1609	pattern_4_prob:            0.1585	pattern_5_prob:            0.1598	pattern_entropy:           0.0000
+pattern_max_similarity:    0.2422	pattern_mean_similarity:   0.1728	progress:                  0.5715	q_taken_mean:              3.9115
+return_mean:             -10.0185	return_std:                5.3160	sparsity_layer_0:          0.4852	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.9104	td_error_abs:              0.2907
+temperature:               1.5710	test_ep_length_mean:      25.0000	test_return_mean:         -9.7241	test_return_std:           5.2653
+
+[INFO 20:26:01] my_main t_env: 1400025 / 3050000
+[INFO 20:26:01] my_main Estimated time left: 4 hours, 18 minutes, 15 seconds. Time passed: 3 hours, 40 minutes, 22 seconds
+[INFO 20:33:48] my_main Recent Stats | t_env:    1450000 | Episode:    58000
+div_coef:                  0.1107	div_loss:                  0.1731	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 1.8732	loss:                      0.1869	loss_td:                   0.1869
+overall_sparsity:          0.1402	pattern_0_prob:            0.1740	pattern_1_prob:            0.1773	pattern_2_prob:            0.1710
+pattern_3_prob:            0.1603	pattern_4_prob:            0.1584	pattern_5_prob:            0.1590	pattern_entropy:           0.0000
+pattern_max_similarity:    0.2573	pattern_mean_similarity:   0.1735	progress:                  0.5923	q_taken_mean:              3.9940
+return_mean:              -9.5882	return_std:                5.0843	sparsity_layer_0:          0.4862	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.9938	td_error_abs:              0.2902
+temperature:               1.4460	test_ep_length_mean:      25.0000	test_return_mean:         -9.5819	test_return_std:           5.2609
+
+[INFO 20:33:48] my_main t_env: 1450025 / 3050000
+[INFO 20:33:48] my_main Estimated time left: 4 hours, 8 minutes, 49 seconds. Time passed: 3 hours, 48 minutes, 9 seconds
+[INFO 20:41:41] my_main Recent Stats | t_env:    1500000 | Episode:    60000
+div_coef:                  0.1139	div_loss:                  0.1741	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 2.4888	loss:                      0.1984	loss_td:                   0.1984
+overall_sparsity:          0.1402	pattern_0_prob:            0.1747	pattern_1_prob:            0.1788	pattern_2_prob:            0.1714
+pattern_3_prob:            0.1592	pattern_4_prob:            0.1576	pattern_5_prob:            0.1584	pattern_entropy:           0.0000
+pattern_max_similarity:    0.2760	pattern_mean_similarity:   0.1746	progress:                  0.6132	q_taken_mean:              3.8338
+return_mean:              -9.5776	return_std:                4.9054	sparsity_layer_0:          0.4865	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.8387	td_error_abs:              0.2964
+temperature:               1.3210	test_ep_length_mean:      25.0000	test_return_mean:         -9.5326	test_return_std:           5.1684
+
+[INFO 20:41:41] my_main t_env: 1500025 / 3050000
+[INFO 20:41:41] my_main Estimated time left: 4 hours, 4 minutes, 18 seconds. Time passed: 3 hours, 56 minutes, 1 seconds
+[INFO 20:49:37] my_main Recent Stats | t_env:    1550000 | Episode:    62000
+div_coef:                  0.1130	div_loss:                  0.1754	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 2.1903	loss:                      0.1959	loss_td:                   0.1959
+overall_sparsity:          0.1402	pattern_0_prob:            0.1757	pattern_1_prob:            0.1798	pattern_2_prob:            0.1707
+pattern_3_prob:            0.1596	pattern_4_prob:            0.1566	pattern_5_prob:            0.1576	pattern_entropy:           0.0000
+pattern_max_similarity:    0.3020	pattern_mean_similarity:   0.1762	progress:                  0.6340	q_taken_mean:              3.9527
+return_mean:              -9.4810	return_std:                4.9931	sparsity_layer_0:          0.4847	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.9517	td_error_abs:              0.2845
+temperature:               1.1960	test_ep_length_mean:      25.0000	test_return_mean:         -9.6841	test_return_std:           5.0457
+
+[INFO 20:49:37] my_main t_env: 1550025 / 3050000
+[INFO 20:49:37] my_main Estimated time left: 3 hours, 57 minutes, 58 seconds. Time passed: 4 hours, 3 minutes, 57 seconds
+[INFO 20:57:30] my_main Recent Stats | t_env:    1600000 | Episode:    64000
+div_coef:                  0.1069	div_loss:                  0.1771	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 2.3052	loss:                      0.1679	loss_td:                   0.1679
+overall_sparsity:          0.1402	pattern_0_prob:            0.1751	pattern_1_prob:            0.1824	pattern_2_prob:            0.1704
+pattern_3_prob:            0.1593	pattern_4_prob:            0.1549	pattern_5_prob:            0.1578	pattern_entropy:           0.0000
+pattern_max_similarity:    0.3358	pattern_mean_similarity:   0.1778	progress:                  0.6548	q_taken_mean:              3.9946
+return_mean:              -9.6234	return_std:                5.1871	sparsity_layer_0:          0.4847	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.9870	td_error_abs:              0.2780
+temperature:               1.0710	test_ep_length_mean:      25.0000	test_return_mean:         -9.7053	test_return_std:           4.9796
+
+[INFO 20:57:30] my_main t_env: 1600025 / 3050000
+[INFO 20:57:30] my_main Estimated time left: 3 hours, 48 minutes, 52 seconds. Time passed: 4 hours, 11 minutes, 51 seconds
+[INFO 21:05:26] my_main Recent Stats | t_env:    1650000 | Episode:    66000
+div_coef:                  0.1044	div_loss:                  0.1788	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 2.9296	loss:                      0.1871	loss_td:                   0.1871
+overall_sparsity:          0.1401	pattern_0_prob:            0.1772	pattern_1_prob:            0.1843	pattern_2_prob:            0.1690
+pattern_3_prob:            0.1596	pattern_4_prob:            0.1543	pattern_5_prob:            0.1555	pattern_entropy:           0.0000
+pattern_max_similarity:    0.3849	pattern_mean_similarity:   0.1795	progress:                  0.6757	q_taken_mean:              3.7447
+return_mean:              -9.6822	return_std:                5.1041	sparsity_layer_0:          0.4842	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.7485	td_error_abs:              0.2852
+temperature:               0.9460	test_ep_length_mean:      25.0000	test_return_mean:         -9.7558	test_return_std:           4.8952
+
+[INFO 21:05:26] my_main t_env: 1650025 / 3050000
+[INFO 21:05:26] my_main Estimated time left: 3 hours, 41 minutes, 55 seconds. Time passed: 4 hours, 19 minutes, 47 seconds
+[INFO 21:13:19] my_main Recent Stats | t_env:    1700000 | Episode:    68000
+div_coef:                  0.1047	div_loss:                  0.1811	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 3.1414	loss:                      0.1648	loss_td:                   0.1648
+overall_sparsity:          0.1402	pattern_0_prob:            0.1797	pattern_1_prob:            0.1859	pattern_2_prob:            0.1686
+pattern_3_prob:            0.1581	pattern_4_prob:            0.1533	pattern_5_prob:            0.1543	pattern_entropy:           0.0000
+pattern_max_similarity:    0.4584	pattern_mean_similarity:   0.1817	progress:                  0.6965	q_taken_mean:              3.4951
+return_mean:              -9.6955	return_std:                5.1825	sparsity_layer_0:          0.4853	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.5112	td_error_abs:              0.2780
+temperature:               0.8210	test_ep_length_mean:      25.0000	test_return_mean:         -9.7617	test_return_std:           4.8232
+
+[INFO 21:13:20] my_main t_env: 1700025 / 3050000
+[INFO 21:13:20] my_main Estimated time left: 3 hours, 33 minutes, 9 seconds. Time passed: 4 hours, 27 minutes, 40 seconds
+[INFO 21:21:15] my_main Recent Stats | t_env:    1750000 | Episode:    70000
+div_coef:                  0.1054	div_loss:                  0.1833	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 2.7673	loss:                      0.1698	loss_td:                   0.1698
+overall_sparsity:          0.1402	pattern_0_prob:            0.1800	pattern_1_prob:            0.1884	pattern_2_prob:            0.1695
+pattern_3_prob:            0.1562	pattern_4_prob:            0.1516	pattern_5_prob:            0.1542	pattern_entropy:           0.0000
+pattern_max_similarity:    0.5585	pattern_mean_similarity:   0.1840	progress:                  0.7173	q_taken_mean:              3.6431
+return_mean:              -9.8744	return_std:                5.2398	sparsity_layer_0:          0.4853	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.6571	td_error_abs:              0.2815
+temperature:               0.6960	test_ep_length_mean:      25.0000	test_return_mean:         -9.6870	test_return_std:           4.8096
+
+[INFO 21:21:15] my_main t_env: 1750025 / 3050000
+[INFO 21:21:15] my_main Estimated time left: 3 hours, 25 minutes, 54 seconds. Time passed: 4 hours, 35 minutes, 35 seconds
+[INFO 21:29:10] my_main Recent Stats | t_env:    1800000 | Episode:    72000
+div_coef:                  0.1007	div_loss:                  0.1872	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 2.7796	loss:                      0.1862	loss_td:                   0.1862
+overall_sparsity:          0.1402	pattern_0_prob:            0.1827	pattern_1_prob:            0.1917	pattern_2_prob:            0.1705
+pattern_3_prob:            0.1540	pattern_4_prob:            0.1508	pattern_5_prob:            0.1503	pattern_entropy:           0.0000
+pattern_max_similarity:    0.6897	pattern_mean_similarity:   0.1882	progress:                  0.7382	q_taken_mean:              3.6239
+return_mean:              -9.6478	return_std:                5.1720	sparsity_layer_0:          0.4847	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.6370	td_error_abs:              0.2914
+temperature:               0.5710	test_ep_length_mean:      25.0000	test_return_mean:         -9.4105	test_return_std:           4.7630
+
+[INFO 21:29:11] my_main t_env: 1800025 / 3050000
+[INFO 21:29:11] my_main Estimated time left: 3 hours, 18 minutes, 12 seconds. Time passed: 4 hours, 43 minutes, 31 seconds
+[INFO 21:37:05] my_main Recent Stats | t_env:    1850000 | Episode:    74000
+div_coef:                  0.0987	div_loss:                  0.1927	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 1.7355	loss:                      0.1808	loss_td:                   0.1808
+overall_sparsity:          0.1402	pattern_0_prob:            0.1840	pattern_1_prob:            0.1949	pattern_2_prob:            0.1700
+pattern_3_prob:            0.1513	pattern_4_prob:            0.1526	pattern_5_prob:            0.1471	pattern_entropy:           0.0000
+pattern_max_similarity:    0.8388	pattern_mean_similarity:   0.1951	progress:                  0.7590	q_taken_mean:              3.5118
+return_mean:              -9.6669	return_std:                5.1309	sparsity_layer_0:          0.4851	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.5130	td_error_abs:              0.2844
+temperature:               0.4460	test_ep_length_mean:      25.0000	test_return_mean:         -9.5115	test_return_std:           4.8055
+
+[INFO 21:37:05] my_main t_env: 1850025 / 3050000
+[INFO 21:37:05] my_main Estimated time left: 3 hours, 9 minutes, 42 seconds. Time passed: 4 hours, 51 minutes, 25 seconds
+[INFO 21:45:02] my_main Recent Stats | t_env:    1900000 | Episode:    76000
+div_coef:                  0.0942	div_loss:                  0.1974	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 2.5651	loss:                      0.1808	loss_td:                   0.1808
+overall_sparsity:          0.1401	pattern_0_prob:            0.1818	pattern_1_prob:            0.2015	pattern_2_prob:            0.1662
+pattern_3_prob:            0.1529	pattern_4_prob:            0.1512	pattern_5_prob:            0.1464	pattern_entropy:           0.0000
+pattern_max_similarity:    0.9543	pattern_mean_similarity:   0.2004	progress:                  0.7798	q_taken_mean:              3.5883
+return_mean:              -9.4082	return_std:                5.0599	sparsity_layer_0:          0.4844	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.5977	td_error_abs:              0.2788
+temperature:               0.3210	test_ep_length_mean:      25.0000	test_return_mean:         -9.3596	test_return_std:           4.8026
+
+[INFO 21:45:03] my_main t_env: 1900025 / 3050000
+[INFO 21:45:03] my_main Estimated time left: 3 hours, 3 minutes, 9 seconds. Time passed: 4 hours, 59 minutes, 23 seconds
+[INFO 21:52:58] my_main Recent Stats | t_env:    1950000 | Episode:    78000
+div_coef:                  0.0867	div_loss:                  0.2044	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 1.7812	loss:                      0.1616	loss_td:                   0.1616
+overall_sparsity:          0.1402	pattern_0_prob:            0.1764	pattern_1_prob:            0.2040	pattern_2_prob:            0.1681
+pattern_3_prob:            0.1519	pattern_4_prob:            0.1536	pattern_5_prob:            0.1459	pattern_entropy:           0.0000
+pattern_max_similarity:    0.9960	pattern_mean_similarity:   0.2047	progress:                  0.8007	q_taken_mean:              3.8327
+return_mean:              -9.2106	return_std:                4.8440	sparsity_layer_0:          0.4844	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.8374	td_error_abs:              0.2708
+temperature:               0.2134	test_ep_length_mean:      25.0000	test_return_mean:         -9.2400	test_return_std:           4.8696
+
+[INFO 21:52:59] my_main t_env: 1950025 / 3050000
+[INFO 21:52:59] my_main Estimated time left: 2 hours, 54 minutes, 33 seconds. Time passed: 5 hours, 7 minutes, 19 seconds
+[INFO 22:00:53] my_main Recent Stats | t_env:    2000000 | Episode:    80000
+div_coef:                  0.0798	div_loss:                  0.2028	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 2.3324	loss:                      0.1622	loss_td:                   0.1622
+overall_sparsity:          0.1402	pattern_0_prob:            0.1800	pattern_1_prob:            0.2055	pattern_2_prob:            0.1672
+pattern_3_prob:            0.1542	pattern_4_prob:            0.1487	pattern_5_prob:            0.1444	pattern_entropy:           0.0000
+pattern_max_similarity:    0.9981	pattern_mean_similarity:   0.2036	progress:                  0.8215	q_taken_mean:              3.7312
+return_mean:              -9.4993	return_std:                5.1884	sparsity_layer_0:          0.4859	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.7268	td_error_abs:              0.2648
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -9.3655	test_return_std:           4.8719
+
+[INFO 22:00:53] my_main t_env: 2000025 / 3050000
+[INFO 22:00:53] my_main Estimated time left: 2 hours, 46 minutes, 1 seconds. Time passed: 5 hours, 15 minutes, 14 seconds
+[INFO 22:08:50] my_main Recent Stats | t_env:    2050000 | Episode:    82000
+div_coef:                  0.0817	div_loss:                  0.2051	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 2.1108	loss:                      0.1580	loss_td:                   0.1580
+overall_sparsity:          0.1402	pattern_0_prob:            0.1849	pattern_1_prob:            0.2037	pattern_2_prob:            0.1656
+pattern_3_prob:            0.1555	pattern_4_prob:            0.1498	pattern_5_prob:            0.1404	pattern_entropy:           0.0000
+pattern_max_similarity:    0.9980	pattern_mean_similarity:   0.2039	progress:                  0.8423	q_taken_mean:              3.8544
+return_mean:              -9.4066	return_std:                5.1202	sparsity_layer_0:          0.4849	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.8540	td_error_abs:              0.2635
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -9.3824	test_return_std:           4.9625
+
+[INFO 22:08:50] my_main t_env: 2050025 / 3050000
+[INFO 22:08:50] my_main Estimated time left: 2 hours, 38 minutes, 54 seconds. Time passed: 5 hours, 23 minutes, 10 seconds
+[INFO 22:16:40] my_main Recent Stats | t_env:    2100000 | Episode:    84000
+div_coef:                  0.0844	div_loss:                  0.2072	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.0000	grad_norm:                 1.9932	loss:                      0.1742	loss_td:                   0.1742
+overall_sparsity:          0.1402	pattern_0_prob:            0.1901	pattern_1_prob:            0.2030	pattern_2_prob:            0.1679
+pattern_3_prob:            0.1532	pattern_4_prob:            0.1427	pattern_5_prob:            0.1430	pattern_entropy:           0.0000
+pattern_max_similarity:    0.9978	pattern_mean_similarity:   0.2048	progress:                  0.8632	q_taken_mean:              3.6251
+return_mean:              -9.5824	return_std:                5.0301	sparsity_layer_0:          0.4846	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.6253	td_error_abs:              0.2731
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -9.1050	test_return_std:           4.8212
+
+[INFO 22:16:40] my_main t_env: 2100025 / 3050000
+[INFO 22:16:40] my_main Estimated time left: 2 hours, 28 minutes, 56 seconds. Time passed: 5 hours, 31 minutes, 1 seconds
+
+============================================================
+[Rewind & Finetune] Starting at t_env=2135000
+  - Online Network masks frozen
+  - Target Network synced and frozen (Identical Masks)
+  - Optimizer reset. Learning rate: 0.0005 -> 0.00045000000000000004
+  - Heterogeneity coefficients (alpha) frozen
+  - Only shared weights (W) will be optimized
+============================================================
+
+[Rewind & Finetune] Starting at t_env=2135000
+  - Masks frozen (Gumbel-Softmax disabled)
+  - Learning rate: 0.0005 -> 0.00045000000000000004
+  - Heterogeneity coefficients (alpha) frozen
+  - Only shared weights (W) will be optimized
+============================================================
+
+[INFO 22:23:00] my_main Recent Stats | t_env:    2150000 | Episode:    86000
+div_coef:                  0.0660	div_loss:                  0.1663	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             0.2000	grad_norm:                 2.7546	loss:                      0.1524	loss_td:                   0.1524
+overall_sparsity:          0.1402	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.7984	pattern_mean_similarity:   0.1626	progress:                  0.8840	q_taken_mean:              3.5401
+return_mean:              -9.6222	return_std:                5.2606	sparsity_layer_0:          0.4850	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.5527	td_error_abs:              0.2580
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -9.0810	test_return_std:           4.9024
+
+[INFO 22:23:00] my_main t_env: 2150025 / 3050000
+[INFO 22:23:00] my_main Estimated time left: 1 hours, 53 minutes, 58 seconds. Time passed: 5 hours, 37 minutes, 21 seconds
+[INFO 22:25:46] my_main Recent Stats | t_env:    2200000 | Episode:    88000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 3.1293	loss:                      0.0762	loss_td:                   0.0762
+overall_sparsity:          0.1401	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  0.9048	q_taken_mean:              3.7707
+return_mean:              -8.6131	return_std:                5.0466	sparsity_layer_0:          0.4844	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.7896	td_error_abs:              0.1870
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.9025	test_return_std:           4.8503
+
+[INFO 22:25:46] my_main t_env: 2200025 / 3050000
+[INFO 22:25:46] my_main Estimated time left: 47 minutes, 5 seconds. Time passed: 5 hours, 40 minutes, 7 seconds
+[INFO 22:28:32] my_main Recent Stats | t_env:    2250000 | Episode:    90000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 1.6724	loss:                      0.0636	loss_td:                   0.0636
+overall_sparsity:          0.1401	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  0.9257	q_taken_mean:              4.0205
+return_mean:              -8.3880	return_std:                5.0559	sparsity_layer_0:          0.4836	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.0287	td_error_abs:              0.1613
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.5212	test_return_std:           4.8211
+
+[INFO 22:28:32] my_main t_env: 2250025 / 3050000
+[INFO 22:28:32] my_main Estimated time left: 44 minutes, 16 seconds. Time passed: 5 hours, 42 minutes, 53 seconds
+[INFO 22:31:13] my_main Recent Stats | t_env:    2300000 | Episode:    92000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 1.5015	loss:                      0.0490	loss_td:                   0.0490
+overall_sparsity:          0.1401	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  0.9465	q_taken_mean:              3.9942
+return_mean:              -8.4439	return_std:                5.2846	sparsity_layer_0:          0.4832	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.9897	td_error_abs:              0.1460
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.4353	test_return_std:           5.0432
+
+[INFO 22:31:13] my_main t_env: 2300025 / 3050000
+[INFO 22:31:13] my_main Estimated time left: 40 minutes, 9 seconds. Time passed: 5 hours, 45 minutes, 34 seconds
+[INFO 22:33:57] my_main Recent Stats | t_env:    2350000 | Episode:    94000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 1.1682	loss:                      0.0497	loss_td:                   0.0497
+overall_sparsity:          0.1402	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  0.9673	q_taken_mean:              4.0951
+return_mean:              -8.5184	return_std:                5.2314	sparsity_layer_0:          0.4850	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.0953	td_error_abs:              0.1427
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.3675	test_return_std:           5.1200
+
+[INFO 22:33:57] my_main t_env: 2350025 / 3050000
+[INFO 22:33:57] my_main Estimated time left: 38 minutes, 21 seconds. Time passed: 5 hours, 48 minutes, 18 seconds
+[INFO 22:36:42] my_main Recent Stats | t_env:    2400000 | Episode:    96000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 1.9433	loss:                      0.0430	loss_td:                   0.0430
+overall_sparsity:          0.1402	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  0.9882	q_taken_mean:              3.7460
+return_mean:              -8.4421	return_std:                5.2464	sparsity_layer_0:          0.4844	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.7529	td_error_abs:              0.1363
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.3093	test_return_std:           5.1349
+
+[INFO 22:36:42] my_main t_env: 2400025 / 3050000
+[INFO 22:36:42] my_main Estimated time left: 35 minutes, 41 seconds. Time passed: 5 hours, 51 minutes, 3 seconds
+[INFO 22:39:27] my_main Recent Stats | t_env:    2450000 | Episode:    98000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 1.4868	loss:                      0.0432	loss_td:                   0.0432
+overall_sparsity:          0.1402	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  1.0000	q_taken_mean:              3.9269
+return_mean:              -8.2465	return_std:                5.0393	sparsity_layer_0:          0.4854	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.9303	td_error_abs:              0.1323
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.2625	test_return_std:           5.0206
+
+[INFO 22:39:27] my_main t_env: 2450025 / 3050000
+[INFO 22:39:27] my_main Estimated time left: 32 minutes, 55 seconds. Time passed: 5 hours, 53 minutes, 47 seconds
+[INFO 22:42:12] my_main Recent Stats | t_env:    2500000 | Episode:   100000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 1.2524	loss:                      0.0405	loss_td:                   0.0405
+overall_sparsity:          0.1401	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  1.0000	q_taken_mean:              4.0563
+return_mean:              -8.5290	return_std:                5.3918	sparsity_layer_0:          0.4839	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.0597	td_error_abs:              0.1272
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.3354	test_return_std:           4.9866
+
+[INFO 22:42:12] my_main t_env: 2500025 / 3050000
+[INFO 22:42:12] my_main Estimated time left: 30 minutes, 18 seconds. Time passed: 5 hours, 56 minutes, 33 seconds
+[INFO 22:44:57] my_main Recent Stats | t_env:    2550000 | Episode:   102000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 1.6984	loss:                      0.0439	loss_td:                   0.0439
+overall_sparsity:          0.1402	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  1.0000	q_taken_mean:              3.8354
+return_mean:              -8.1712	return_std:                5.1047	sparsity_layer_0:          0.4845	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.8395	td_error_abs:              0.1311
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.4424	test_return_std:           4.9443
+
+[INFO 22:44:57] my_main t_env: 2550025 / 3050000
+[INFO 22:44:57] my_main Estimated time left: 27 minutes, 27 seconds. Time passed: 5 hours, 59 minutes, 17 seconds
+[INFO 22:47:41] my_main Recent Stats | t_env:    2600000 | Episode:   104000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 1.5905	loss:                      0.0441	loss_td:                   0.0441
+overall_sparsity:          0.1401	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  1.0000	q_taken_mean:              3.9960
+return_mean:              -8.3605	return_std:                5.1614	sparsity_layer_0:          0.4837	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               4.0012	td_error_abs:              0.1307
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.4719	test_return_std:           5.0505
+
+[INFO 22:47:41] my_main t_env: 2600025 / 3050000
+[INFO 22:47:41] my_main Estimated time left: 24 minutes, 37 seconds. Time passed: 6 hours, 2 minutes, 2 seconds
+[INFO 22:50:28] my_main Recent Stats | t_env:    2650000 | Episode:   106000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 1.0714	loss:                      0.0333	loss_td:                   0.0333
+overall_sparsity:          0.1401	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  1.0000	q_taken_mean:              3.8935
+return_mean:              -8.3986	return_std:                5.1978	sparsity_layer_0:          0.4836	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.8970	td_error_abs:              0.1221
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.2094	test_return_std:           4.9071
+
+[INFO 22:50:28] my_main t_env: 2650025 / 3050000
+[INFO 22:50:28] my_main Estimated time left: 22 minutes, 18 seconds. Time passed: 6 hours, 4 minutes, 49 seconds
+[INFO 22:53:14] my_main Recent Stats | t_env:    2700000 | Episode:   108000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 2.0980	loss:                      0.0442	loss_td:                   0.0442
+overall_sparsity:          0.1402	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  1.0000	q_taken_mean:              3.7418
+return_mean:              -8.4332	return_std:                5.2342	sparsity_layer_0:          0.4847	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.7486	td_error_abs:              0.1279
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.3597	test_return_std:           5.0567
+
+[INFO 22:53:14] my_main t_env: 2700025 / 3050000
+[INFO 22:53:14] my_main Estimated time left: 19 minutes, 17 seconds. Time passed: 6 hours, 7 minutes, 34 seconds
+[INFO 22:56:01] my_main Recent Stats | t_env:    2750000 | Episode:   110000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 2.4450	loss:                      0.0459	loss_td:                   0.0459
+overall_sparsity:          0.1402	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  1.0000	q_taken_mean:              3.6949
+return_mean:              -8.3711	return_std:                5.1977	sparsity_layer_0:          0.4852	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.7074	td_error_abs:              0.1365
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.3771	test_return_std:           5.1671
+
+[INFO 22:56:01] my_main t_env: 2750025 / 3050000
+[INFO 22:56:01] my_main Estimated time left: 16 minutes, 42 seconds. Time passed: 6 hours, 10 minutes, 21 seconds
+[INFO 22:58:46] my_main Recent Stats | t_env:    2800000 | Episode:   112000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 1.7072	loss:                      0.0509	loss_td:                   0.0509
+overall_sparsity:          0.1402	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  1.0000	q_taken_mean:              3.6781
+return_mean:              -8.4917	return_std:                5.2684	sparsity_layer_0:          0.4852	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.6852	td_error_abs:              0.1376
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.2441	test_return_std:           5.2037
+
+[INFO 22:58:47] my_main t_env: 2800025 / 3050000
+[INFO 22:58:47] my_main Estimated time left: 13 minutes, 48 seconds. Time passed: 6 hours, 13 minutes, 7 seconds
+[INFO 23:01:34] my_main Recent Stats | t_env:    2850000 | Episode:   114000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 1.0532	loss:                      0.0379	loss_td:                   0.0379
+overall_sparsity:          0.1401	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  1.0000	q_taken_mean:              3.8906
+return_mean:              -8.3039	return_std:                5.3341	sparsity_layer_0:          0.4842	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.8930	td_error_abs:              0.1248
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.1400	test_return_std:           5.0087
+
+[INFO 23:01:34] my_main t_env: 2850025 / 3050000
+[INFO 23:01:34] my_main Estimated time left: 11 minutes, 10 seconds. Time passed: 6 hours, 15 minutes, 55 seconds
+[INFO 23:04:18] my_main Recent Stats | t_env:    2900000 | Episode:   116000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 1.0795	loss:                      0.0455	loss_td:                   0.0455
+overall_sparsity:          0.1402	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  1.0000	q_taken_mean:              3.8087
+return_mean:              -8.0966	return_std:                5.1284	sparsity_layer_0:          0.4850	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.8063	td_error_abs:              0.1254
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.2020	test_return_std:           5.1864
+
+[INFO 23:04:18] my_main t_env: 2900025 / 3050000
+[INFO 23:04:18] my_main Estimated time left: 8 minutes, 10 seconds. Time passed: 6 hours, 18 minutes, 38 seconds
+[INFO 23:07:01] my_main Recent Stats | t_env:    2950000 | Episode:   118000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 2.1492	loss:                      0.0931	loss_td:                   0.0931
+overall_sparsity:          0.1401	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  1.0000	q_taken_mean:              3.6004
+return_mean:              -8.2684	return_std:                5.1980	sparsity_layer_0:          0.4824	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.5998	td_error_abs:              0.1404
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.1484	test_return_std:           5.1471
+
+[INFO 23:07:01] my_main t_env: 2950025 / 3050000
+[INFO 23:07:01] my_main Estimated time left: 5 minutes, 27 seconds. Time passed: 6 hours, 21 minutes, 22 seconds
+[INFO 23:09:44] my_main Recent Stats | t_env:    3000000 | Episode:   120000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 1.9765	loss:                      0.0462	loss_td:                   0.0462
+overall_sparsity:          0.1401	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  1.0000	q_taken_mean:              3.7378
+return_mean:              -8.2903	return_std:                5.1972	sparsity_layer_0:          0.4842	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.7448	td_error_abs:              0.1354
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -8.0107	test_return_std:           5.0603
+
+[INFO 23:09:44] my_main t_env: 3000025 / 3050000
+[INFO 23:09:44] my_main Estimated time left: 2 minutes, 42 seconds. Time passed: 6 hours, 24 minutes, 4 seconds
+[INFO 23:12:27] my_main Recent Stats | t_env:    3050000 | Episode:   122000
+div_coef:                  0.0000	div_loss:                  0.0000	ep_length_mean:           25.0000	epsilon:                   0.0500
+finetune_mode:             1.0000	grad_norm:                 1.5864	loss:                      0.0439	loss_td:                   0.0439
+overall_sparsity:          0.1402	pattern_0_prob:            0.1879	pattern_1_prob:            0.2012	pattern_2_prob:            0.1650
+pattern_3_prob:            0.1599	pattern_4_prob:            0.1441	pattern_5_prob:            0.1420	pattern_entropy:           0.0000
+pattern_max_similarity:    0.0000	pattern_mean_similarity:   0.0000	progress:                  1.0000	q_taken_mean:              3.6929
+return_mean:              -8.5294	return_std:                5.2319	sparsity_layer_0:          0.4846	sparsity_layer_1:          0.5000
+sparsity_layer_2:          0.5000	sparsity_layer_3:          0.5000	target_mean:               3.6947	td_error_abs:              0.1312
+temperature:               0.2000	test_ep_length_mean:      25.0000	test_return_mean:         -7.8939	test_return_std:           4.9735
+
+[INFO 23:12:27] my_main t_env: 3050025 / 3050000
+[INFO 23:12:27] my_main Estimated time left: -. Time passed: 6 hours, 26 minutes, 47 seconds
+[INFO 23:12:31] my_main Finished Training
+Exiting Main
+Stopping all threads
+Thread Thread-1 is alive! Is daemon: False
+Thread joined
+Exiting script
+[DEBUG 23:12:32] my_main Finished after 6:26:53.
+[INFO 23:12:32] pymarl Completed after 6:26:53

@@ -1,0 +1,92 @@
+# --- LDSA with K24 2:4 Sparsity and TAAE-style Attention ---
+
+# Use epsilon greedy action selector
+action_selector: "epsilon_greedy"
+epsilon_start: 1.0
+epsilon_finish: 0.05
+epsilon_anneal_time: 50000
+
+runner: "episode"
+
+buffer_size: 5000
+
+# Update the target network every {} episodes
+target_update_interval: 200
+
+# Use the K24-aware learner
+agent_output_type: "q"
+learner: "ldsa_k24_learner"
+double_q: True
+mixer: "qmix"
+mixing_embed_dim: 32
+hypernet_layers: 2
+hypernet_embed: 64
+
+name: "ldsa_k24"
+
+# Agent configuration
+agent: "ldsa_k24"
+mac: "ldsa_mac"
+
+# LDSA parameters
+max_subtasks: 5
+min_subtasks: 2
+n_subtasks: 4
+state_dims: null
+agent_subtask_embed_dim: 64
+sft_way: "gumbel_softmax"
+test_argmax: True
+lambda_subtask_prob: 0.001
+lambda_subtask_repr: 0.001
+subtask_policy_use_hypernet: True
+use_tanh: True
+subtask_repr_layers: 2
+random_sele: False
+
+# Caching for dynamic subtask generation
+cache_subtask_count: True
+cache_steps: 10
+
+# ========== K24 2:4 Sparsity Parameters ==========
+use_k24: True
+
+# Temperature annealing for Gumbel-Softmax
+K24_temperature_init: 5.0      # Initial temperature (high noise for exploration)
+K24_temperature_min: 0.1       # Minimum temperature (low noise for convergence)
+K24_anneal_end_step: 4000000   # Step when annealing ends (80% of t_max)
+
+# Diversity loss parameters
+K24_div_coef: 0.1              # Base coefficient for pattern orthogonality loss
+K24_div_target_ratio: 1.0      # Target ratio of div_loss / td_loss
+K24_div_min_coef: 0.01         # Minimum diversity coefficient
+K24_div_max_coef: 1.0          # Maximum diversity coefficient
+
+# Heterogeneity coefficient reset
+K24_reset_interval: 500000     # Reset interval for heterogeneity coefficients
+K24_reset_ratio: 0.1           # Fraction of coefficients to reset
+
+# Finetuning parameters
+K24_finetune_start_ratio: 0.8  # Start finetuning at 80% of training
+K24_finetune_lr_decay: 0.9     # Learning rate decay during finetuning
+
+# Use global state in centralized training
+K24_use_global_state: True
+
+# ========== Attention Parameters ==========
+use_attention: True
+
+# Multi-head attention settings
+attention_z_dims: 64           # Latent dimension for state-observation fusion
+attention_num_heads: 4         # Number of attention heads
+attention_hidden_dim: 64       # Hidden dimension for attention projections
+
+# ========== Training Schedule Notes ==========
+# Phase 1 (0-80%): Mask exploration with temperature annealing
+#   - Temperature: 5.0 -> 0.1
+#   - Diversity loss: Active with adaptive coefficient
+#   - Mask resets: Every 500K steps
+#
+# Phase 2 (80-100%): Fixed masks with finetuning
+#   - Masks: Frozen
+#   - Learning rate: Decayed by 10%
+#   - Diversity loss: Disabled (masks are fixed)

@@ -14,8 +14,17 @@ export CUDA_VISIBLE_DEVICES=0
 # python src/main.py --config=Kalei_qmix_rnn_1R3 --env-config=gymma with env_args.time_limit=25 env_args.key="pz-mpe-simple-world-comm-v3"
 
 
-python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma with env_args.time_limit=25 env_args.key="pz-mpe-simple-world-comm-v3"
-python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma with env_args.time_limit=25 env_args.key="pz-mpe-simple-world-comm-v3"
-python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma with env_args.time_limit=25 env_args.key="pz-mpe-simple-world-comm-v3"
+# python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma with env_args.time_limit=25 env_args.key="pz-mpe-simple-world-comm-v3"
+# python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma with env_args.time_limit=25 env_args.key="pz-mpe-simple-world-comm-v3"
+# python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma with env_args.time_limit=25 env_args.key="pz-mpe-simple-world-comm-v3"
 
 
+python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma with env_args.time_limit=25 env_args.key="pz-mpe-simple-push-v3"
+python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma with env_args.time_limit=25 env_args.key="pz-mpe-simple-push-v3"
+python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma with env_args.time_limit=25 env_args.key="pz-mpe-simple-push-v3"
+
+
+
+python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma with env_args.time_limit=25 env_args.key="pz-mpe-simple-speaker-listener-v4"
+python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma with env_args.time_limit=25 env_args.key="pz-mpe-simple-speaker-listener-v4"
+python src/main.py --config=SNP_qmix_rnn_1R3 --env-config=gymma with env_args.time_limit=25 env_args.key="pz-mpe-simple-speaker-listener-v4"

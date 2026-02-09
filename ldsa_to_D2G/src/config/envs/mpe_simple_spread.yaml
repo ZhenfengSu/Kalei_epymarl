@@ -1,0 +1,26 @@
+# MPE Simple Spread Environment Configuration
+# This is a common multi-agent coordination benchmark
+
+env: "mpe"
+
+env_args:
+  continuing_episode: False
+  scenario_name: "simple_spread"
+  episode_limit: 25
+  n_agents: 3
+  # MPE-specific parameters
+  normalize_observation: False
+
+test_greedy: True
+test_nepisode: 32
+test_interval: 5000
+log_interval: 5000
+runner_log_interval: 5000
+learner_log_interval: 5000
+t_max: 500000
+
+# MPE typically has smaller state dimensions
+state_dims: null  # Will be set by environment
+
+# For MPE, we can use shorter training
+use_cuda: True
